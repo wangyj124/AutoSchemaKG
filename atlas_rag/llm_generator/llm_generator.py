@@ -57,6 +57,7 @@ class LLMGenerator():
         self.model_name = model_name
         self.client : OpenAI|Pipeline  = client
         self.max_workers = max_workers
+        self.backend = backend
         if isinstance(client, OpenAI|AzureOpenAI):
             self.inference_type = "openai"
         elif isinstance(client, Pipeline):
@@ -72,26 +73,43 @@ class LLMGenerator():
     def _api_inference(self, message, max_new_tokens=8192,
                            temperature = 0.7,
                            frequency_penalty = None,
+                           repetition_penalty = None,
                            response_format = {"type": "text"},
                            return_text_only=True,
                            return_thinking=False,
                            reasoning_effort=None,
                            **kwargs):
         start_time = time.time()
+        extra_body_params = {
+            "chat_template_kwargs": {"enable_thinking": False if reasoning_effort is None else True}
+        }
+    
+        # For OpenAI API, map repetition_penalty to frequency_penalty and presence_penalty
+        if self.inference_type == "openai" and self.backend == "openai":
+            if repetition_penalty is not None:
+                # Split the effect between frequency and presence penalties
+                penalty_value = min(2.0, max(0.0, (repetition_penalty - 1.0) * 2.0))
+                if frequency_penalty is None:
+                    frequency_penalty = penalty_value * 0.7  # 70% weight on frequency
+                if presence_penalty is None:
+                    presence_penalty = penalty_value * 0.3   # 30% weight on presence
+        else:
+            # For non-OpenAI backends (vLLM), use repetition_penalty directly
+            if repetition_penalty is not None:
+                extra_body_params["repetition_penalty"] = repetition_penalty
+        
         response = self.client.chat.completions.create(
-                model=self.model_name,
-                messages=message,
-                max_tokens=max_new_tokens,
-                temperature=temperature,
-                frequency_penalty= NOT_GIVEN if frequency_penalty is None else frequency_penalty,
-                response_format = response_format if response_format is not None else {"type": "text"},
-                timeout = 120,
-                reasoning_effort= NOT_GIVEN if reasoning_effort is None else reasoning_effort,
-                extra_body = {
-                    "chat_template_kwargs": {"enable_thinking": False if reasoning_effort is None else True}
-                }
-                
-            )
+            model=self.model_name,
+            messages=message,
+            max_tokens=max_new_tokens,
+            temperature=temperature,
+            frequency_penalty= NOT_GIVEN if frequency_penalty is None else frequency_penalty,
+            presence_penalty= NOT_GIVEN if presence_penalty is None else presence_penalty,
+            response_format = response_format if response_format is not None else {"type": "text"},
+            timeout = 120,
+            reasoning_effort= NOT_GIVEN if reasoning_effort is None else reasoning_effort,
+            extra_body = extra_body_params
+        )
         time_cost = time.time() - start_time
         content = response.choices[0].message.content
         if content is None and hasattr(response.choices[0].message, 'reasoning_content'):
@@ -114,8 +132,9 @@ class LLMGenerator():
             return content, completion_usage_dict
 
     def generate_response(self, batch_messages, do_sample=True, max_new_tokens=8192,
-                                 temperature=0.7, frequency_penalty=None, response_format={"type": "text"},
-                                 return_text_only=True, return_thinking=False, reasoning_effort=None, **kwargs):
+                             temperature=0.7, frequency_penalty=None, repetition_penalty=None,
+                             response_format={"type": "text"},
+                             return_text_only=True, return_thinking=False, reasoning_effort=None, **kwargs):
         if temperature == 0.0:
             do_sample = False
         # single = list of dict, batch = list of list of dict
@@ -132,7 +151,8 @@ class LLMGenerator():
                     try:
                         return self._api_inference(
                             batch_messages[i], max_new_tokens, temperature,
-                            frequency_penalty, response_format, return_text_only, return_thinking, reasoning_effort, **kwargs
+                            frequency_penalty, repetition_penalty, response_format, 
+                            return_text_only, return_thinking, reasoning_effort, **kwargs
                         )
                     except Exception as e:
                         return "[]"
@@ -147,13 +167,22 @@ class LLMGenerator():
         elif self.inference_type == "pipeline":
             max_retries = kwargs.get('max_retries', 3)  # Default to 3 retries if not specified
             start_time = time.time()
+            # Build generation kwargs
+            generation_kwargs = {
+                "max_new_tokens": max_new_tokens,
+                "temperature": temperature,
+                "do_sample": do_sample,
+                "return_full_text": False
+            }
+            
+            # Add repetition_penalty if provided
+            if repetition_penalty is not None:
+                generation_kwargs["repetition_penalty"] = repetition_penalty
+            
             # Initial processing of all messages
             responses = self.client(
                 batch_messages,
-                max_new_tokens=max_new_tokens,
-                temperature=temperature,
-                do_sample=do_sample,
-                return_full_text=False
+                **generation_kwargs
             )
             time_cost = time.time() - start_time
             
@@ -418,7 +447,8 @@ class LLMGenerator():
         return self.generate_response(messages, max_new_tokens=max_new_tokens)
 
     
-    def triple_extraction(self, messages, result_schema, max_tokens=4096, stage=None, record=False, allow_empty=True):
+    def triple_extraction(self, messages, result_schema, max_tokens=4096, stage=None, 
+                     record=False, allow_empty=True, repetition_penalty=None):
         if isinstance(messages[0], dict):
             messages = [messages]
         validate_kwargs = {
@@ -427,7 +457,14 @@ class LLMGenerator():
             'allow_empty': allow_empty
         }
         try:
-            result = self.generate_response(messages, max_new_tokens=max_tokens, validate_function=validate_output, return_text_only = not record, **validate_kwargs)
+            result = self.generate_response(
+                messages, 
+                max_new_tokens=max_tokens, 
+                repetition_penalty=repetition_penalty,
+                validate_function=validate_output, 
+                return_text_only=not record, 
+                **validate_kwargs
+            )
             return result
         except Exception as e:
             print(f"Triple extraction failed: {e}")
