@@ -8,6 +8,7 @@ import json
 import os
 import argparse
 from datetime import datetime
+import time
 from typing import List, Dict, Any, Tuple
 from pathlib import Path
 import torch
@@ -350,7 +351,8 @@ class KnowledgeGraphExtractor:
         print(f"Model: {self.config.model_path}")
         
         batch_counter = 0
-        
+        if self.config.record:
+            extraction_start_time = time.time()
         with torch.no_grad():
             with open(output_file, "w") as output_stream:
                 for batch in data_loader:
@@ -389,6 +391,22 @@ class KnowledgeGraphExtractor:
    
                         output_stream.write(json.dumps(result, ensure_ascii=False) + "\n")
                         output_stream.flush()
+            if self.config.record and self.config.benchmark:
+                # add the total time taken for extraction at the last json object
+                total_extraction_time = time.time() - extraction_start_time
+                # read the json and modify the last json object
+                with open(output_file, "r") as f:
+                    lines = f.readlines()
+                if len(lines) > 0:
+                    last_line = lines[-1]
+                    try:
+                        last_json = json.loads(last_line)
+                        last_json['total_extraction_time_seconds'] = total_extraction_time
+                        lines[-1] = json.dumps(last_json, ensure_ascii=False) + "\n"
+                        with open(output_file, "w") as f:
+                            f.writelines(lines)
+                    except:
+                        print("Failed to add extraction time to the last json object")
 
     def convert_json_to_csv(self):
         json2csv(
@@ -405,6 +423,8 @@ class KnowledgeGraphExtractor:
         )
     
     def generate_concept_csv_temp(self, batch_size: int = None, **kwargs):
+        if self.config.benchmark and self.config.record:
+            concept_start_time = time.time()
         generate_concept(
             model=self.model,
             input_file=f"{self.config.output_directory}/triples_csv/missing_concepts_{self.config.filename_pattern}_from_json.csv",
@@ -418,6 +438,11 @@ class KnowledgeGraphExtractor:
             record = self.config.record,
             **kwargs
         )
+        if self.config.benchmark and self.config.record:  
+            # add line to the logging file
+            total_concept_time = time.time() - concept_start_time
+            with open(f"{self.config.output_directory}/concepts/logging.txt", "a") as f:
+                f.write(f"Total concept generation time: {total_concept_time:.2f} seconds\n")
     
     def create_concept_csv(self):
         merge_csv_files(

@@ -41,11 +41,18 @@ def serialize_openai_tool_call_message(message) -> dict:
 def print_retry(retry_state: RetryCallState):
     # Access the instance via retry_state.args[0] if method is bound
     instance = retry_state.args[0] if retry_state.args else None
+    
+    # Print the error that caused the retry
+    if retry_state.outcome.failed:
+        exception = retry_state.outcome.exception()
+        print(f"Error occurred: {type(exception).__name__}: {str(exception)}")
+    
     if instance and hasattr(instance, 'retry_count'):
         instance.retry_count += 1
         print(f"Retrying {retry_state.fn.__name__}: attempt {retry_state.attempt_number}, total retries: {instance.retry_count}")
     else:
         print(f"Retrying {retry_state.fn.__name__}: attempt {retry_state.attempt_number}")
+
 retry_decorator = retry(
     stop=(stop_after_delay(120) | stop_after_attempt(5)),  # Max 2 minutes or 5 attempts
     # wait=wait_exponential(multiplier=1, min=2, max=30) + wait_random(min=0, max=2),
@@ -78,6 +85,7 @@ class LLMGenerator():
                            return_text_only=True,
                            return_thinking=False,
                            reasoning_effort=None,
+                           presence_penalty = None,
                            **kwargs):
         start_time = time.time()
         extra_body_params = {

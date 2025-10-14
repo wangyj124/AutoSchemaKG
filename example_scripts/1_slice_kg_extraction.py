@@ -18,18 +18,19 @@ if __name__ == "__main__":
     config = ConfigParser()
     config.read('config.ini')
     # Added support for Azure Foundry. To use it, please do az-login in cmd first.
-    model_name = "DeepSeek-V3-0324"
+    # model_name = "DeepSeek-V3-0324"
 
     # connection = AIProjectClient(
     #     endpoint=config["urls"]["AZURE_URL"],
     #     credential=DefaultAzureCredential(),
     # )
     # client = connection.inference.get_azure_openai_client(api_version="2024-12-01-preview")
-    model_name = "meta-llama/Llama-3.3-70B-Instruct"
+    model_name = "Qwen/Qwen2.5-7B-Instruct"
+    # model_name = "meta-llama/Llama-3.3-70B-Instruct"
     # model_name = "Qwen/Qwen3-8B"
     # model_name = "Qwen/Qwen3-30B-A3B-Instruct-2507"
     client = OpenAI(
-        base_url="http://localhost:8122/v1",
+        base_url="http://localhost:8137/v1",
         api_key="EMPTYKEY",
     )
     # test client
@@ -40,15 +41,15 @@ if __name__ == "__main__":
     start_time = time.time()
     kg_extraction_config = ProcessingConfig(
         model_path=model_name,
-        data_directory="/data/AutoSchema",
+        data_directory="/data/httsangaj/atomic-rag/cc_en_head",
         filename_pattern=keyword,
         batch_size_triple=16,
         batch_size_concept=64,
-        output_directory=f'/data/AutoSchema/{model_name}',
+        output_directory=f'/data/httsangaj/atomic-rag/cc_en_head/{model_name}',
         current_shard_triple=args.shard,
         total_shards_triple=args.total_shards,
         record=True,
-        max_new_tokens=1024,
+        max_new_tokens=8192,
         benchmark=True
     )
     kg_extractor = KnowledgeGraphExtractor(model=triple_generator, config=kg_extraction_config)

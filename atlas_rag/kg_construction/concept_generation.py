@@ -10,6 +10,11 @@ from atlas_rag.kg_construction.triple_config import ProcessingConfig
 from atlas_rag.kg_construction.utils.csv_processing.csv_to_graphml import get_node_id
 from atlas_rag.llm_generator.prompt.triple_extraction_prompt import CONCEPT_INSTRUCTIONS
 import pickle
+
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("openai").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+
 # Increase the field size limit
 csv.field_size_limit(10 * 1024 * 1024)  # 10 MB limit
 
