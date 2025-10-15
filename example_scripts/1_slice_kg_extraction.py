@@ -7,7 +7,7 @@ from configparser import ConfigParser
 from argparse import ArgumentParser
 from openai import OpenAI
 import time
-
+import torch
 
 parser = ArgumentParser(description="Generate knowledge graph slices from text data.")
 parser.add_argument("--shard", type=int, help="Shard number to process.", default=0)
