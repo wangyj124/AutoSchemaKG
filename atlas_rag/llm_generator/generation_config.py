@@ -14,7 +14,7 @@ class GenerationConfig:
     """
     
     # Core generation parameters (supported by all backends)
-    max_tokens: int = 4096
+    max_tokens: int = 8192
     temperature: float = 0.7
     top_p: Optional[float] = None
     top_k: Optional[int] = None
