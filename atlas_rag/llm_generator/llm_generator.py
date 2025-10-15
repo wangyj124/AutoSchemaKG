@@ -224,7 +224,8 @@ class LLMGenerator():
                 # For vLLM, SGLang, TensorRT servers and other APIs, use repetition_penalty directly
                 if repetition_penalty is not None:
                     extra_body_params["repetition_penalty"] = repetition_penalty
-            
+                    extra_body_params["early_stopping"] = config.early_stopping
+
             api_params = {
                 "max_tokens": max_new_tokens,
                 "temperature": temperature,
