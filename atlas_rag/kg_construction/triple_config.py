@@ -17,7 +17,6 @@ class ProcessingConfig:
     debug_mode: bool = False
     resume_from: int = 0
     record : bool = False
-    max_new_tokens: int = 8192
     max_workers: int = 8
     remove_doc_spaces: bool = False
     allow_empty: bool = True
@@ -26,7 +25,8 @@ class ProcessingConfig:
     # Custom configuration for triple extraction
     triple_extraction_prompt_path: str = None
     triple_extraction_schema_path: str = None
-    # for now set llm generation config here, TODO: refactor later
+    # Override LLM generation parameters for backward compatibility
+    max_new_tokens: int = 8192
     repetition_penalty: float = 1.0
     # for benchmarking the gpu-hour of first 100 document
     benchmark : bool = False

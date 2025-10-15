@@ -1,18 +1,25 @@
-import json
-import asyncio
-from openai import OpenAI, AzureOpenAI, NOT_GIVEN
+
+
+from typing import Optional, Union, Any
+
 from tenacity import retry, stop_after_attempt, stop_after_delay, wait_fixed, wait_exponential, wait_random, RetryCallState
 from copy import deepcopy
 from concurrent.futures import ThreadPoolExecutor
+
 from atlas_rag.llm_generator.prompt.rag_prompt import cot_system_instruction, cot_system_instruction_kg, cot_system_instruction_no_doc, prompt_template
 from atlas_rag.llm_generator.prompt.lkg_prompt import ner_prompt, keyword_filtering_prompt, simple_ner_prompt
 from atlas_rag.llm_generator.prompt.rag_prompt import filter_triple_messages
 from atlas_rag.llm_generator.format.validate_json_output import *
 from atlas_rag.llm_generator.format.validate_json_schema import filter_fact_json_schema, lkg_keyword_json_schema, ATLAS_SCHEMA
+from atlas_rag.llm_generator.generation_config import GenerationConfig
+
+from openai import OpenAI, AzureOpenAI, NOT_GIVEN
 from transformers.pipelines import Pipeline
+from transformers import AutoTokenizer
+
+import json
 import jsonschema
 import time
-from transformers import AutoTokenizer
 
 
 
@@ -59,25 +66,104 @@ retry_decorator = retry(
     wait=wait_fixed(0),
     before_sleep=print_retry,
 )
+
 class LLMGenerator():
-    def __init__(self, client, model_name, backend='openai', max_workers=8):
+    """
+    Unified LLM generator supporting multiple backends:
+    
+    Inference Types:
+    - api: OpenAI-compatible API inference (OpenAI, Azure, Together AI, DeepInfra, vLLM server, etc.)
+    - pipeline: HuggingFace Transformers pipeline
+    - vllm: vLLM offline engine (local inference)
+    - sglang: SGLang runtime (local inference)
+    - tensorrt: TensorRT-LLM (local inference)
+    
+    Backend Types (for API inference):
+    - openai: OpenAI API
+    - azure: Azure OpenAI API
+    - vllm: vLLM server (OpenAI-compatible)
+    - sglang: SGLang server (OpenAI-compatible)
+    - tensorrt: TensorRT-LLM server (OpenAI-compatible)
+    - together: Together AI API
+    - deepinfra: DeepInfra API
+    - custom: Other OpenAI-compatible APIs
+    """
+    
+    def __init__(self, client: Union[OpenAI, AzureOpenAI, Pipeline, Any], 
+                 model_name: str, 
+                 backend: str = 'openai', 
+                 max_workers: int = 8,
+                 default_config: Optional[GenerationConfig] = None):
+        """
+        Initialize LLM generator.
+        
+        Args:
+            client: Client object (OpenAI, Pipeline, vLLM.LLM, SGLang runtime, TensorRT-LLM engine)
+            model_name: Model identifier
+            backend: Backend type ('openai', 'azure', 'vllm', 'sglang', 'tensorrt', 'together', 'deepinfra', 'custom')
+            max_workers: Number of concurrent workers for API inference
+            default_config: Default GenerationConfig for all generation calls (optional)
+        """
         self.model_name = model_name
-        self.client : OpenAI|Pipeline  = client
+        self.client = client
         self.max_workers = max_workers
         self.backend = backend
-        if isinstance(client, OpenAI|AzureOpenAI):
-            self.inference_type = "openai"
+        self.retry_count = 0
+        
+        # Set default generation config
+        self.config = default_config if default_config is not None else GenerationConfig()
+        
+        # Determine inference type based on client
+        if isinstance(client, (OpenAI, AzureOpenAI)):
+            self.inference_type = "api"
+            self.tokenizer = None
         elif isinstance(client, Pipeline):
             self.inference_type = "pipeline"
+            self.tokenizer = client.tokenizer if hasattr(client, 'tokenizer') else None
         else:
-            raise ValueError("Unsupported client type. Please provide either an OpenAI client or a Huggingface Pipeline Object.")
+            # Check for vLLM offline engine
+            if hasattr(client, 'generate') and hasattr(client, 'get_tokenizer'):
+                self.inference_type = "vllm"
+                self.tokenizer = client.get_tokenizer()
+            # Check for SGLang runtime
+            elif hasattr(client, 'generate') and 'sglang' in str(type(client)).lower():
+                self.inference_type = "sglang"
+                self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+            # Check for TensorRT-LLM
+            elif hasattr(client, 'generate') and 'tensorrt' in str(type(client)).lower():
+                self.inference_type = "tensorrt"
+                self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+            else:
+                raise ValueError(
+                    f"Unsupported client type: {type(client)}. "
+                    "Please provide one of: OpenAI, AzureOpenAI, Pipeline, vLLM.LLM, SGLang runtime, or TensorRT-LLM engine."
+                )
         
-        if backend == 'vllm':
-            self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-        self.retry_count = 0
+        print(f"Initialized LLMGenerator with inference_type='{self.inference_type}', backend='{self.backend}'")
+
+    def _format_messages_for_local(self, messages):
+        """Format messages for local inference engines that may need special handling."""
+        if self.tokenizer is None:
+            return messages
+        
+        # For local inference, apply chat template if available
+        if hasattr(self.tokenizer, 'apply_chat_template'):
+            try:
+                formatted = self.tokenizer.apply_chat_template(
+                    messages, 
+                    tokenize=False, 
+                    add_generation_prompt=True
+                )
+                return formatted
+            except Exception as e:
+                print(f"Warning: Failed to apply chat template: {e}")
+                # Fallback to simple concatenation
+                return "\n".join([f"{m['role']}: {m['content']}" for m in messages])
+        return messages
 
     @retry_decorator
-    def _api_inference(self, message, max_new_tokens=8192,
+    def _api_inference(self, message, config: Optional[GenerationConfig] = None,
+                           max_new_tokens=8192,
                            temperature = 0.7,
                            frequency_penalty = None,
                            repetition_penalty = None,
@@ -87,37 +173,82 @@ class LLMGenerator():
                            reasoning_effort=None,
                            presence_penalty = None,
                            **kwargs):
-        start_time = time.time()
-        extra_body_params = {
-            "chat_template_kwargs": {"enable_thinking": False if reasoning_effort is None else True}
-        }
-    
-        # For OpenAI API, map repetition_penalty to frequency_penalty and presence_penalty
-        if self.inference_type == "openai" and self.backend == "openai":
-            if repetition_penalty is not None:
-                # Split the effect between frequency and presence penalties
-                penalty_value = min(2.0, max(0.0, (repetition_penalty - 1.0) * 2.0))
-                if frequency_penalty is None:
-                    frequency_penalty = penalty_value * 0.7  # 70% weight on frequency
-                if presence_penalty is None:
-                    presence_penalty = penalty_value * 0.3   # 30% weight on presence
-        else:
-            # For non-OpenAI backends (vLLM), use repetition_penalty directly
-            if repetition_penalty is not None:
-                extra_body_params["repetition_penalty"] = repetition_penalty
+        """
+        API inference (OpenAI-compatible) with support for GenerationConfig or legacy parameters.
+        Used for: OpenAI, Azure, vLLM server, SGLang server, TensorRT-LLM server, Together AI, etc.
         
-        response = self.client.chat.completions.create(
-            model=self.model_name,
-            messages=message,
-            max_tokens=max_new_tokens,
-            temperature=temperature,
-            frequency_penalty= NOT_GIVEN if frequency_penalty is None else frequency_penalty,
-            presence_penalty= NOT_GIVEN if presence_penalty is None else presence_penalty,
-            response_format = response_format if response_format is not None else {"type": "text"},
-            timeout = 120,
-            reasoning_effort= NOT_GIVEN if reasoning_effort is None else reasoning_effort,
-            extra_body = extra_body_params
-        )
+        Args:
+            message: The message(s) to send to the API
+            config: GenerationConfig object (preferred). If provided, overrides other parameters.
+            max_new_tokens: Legacy parameter (used if config is None)
+            temperature: Legacy parameter (used if config is None)
+            ... other legacy parameters ...
+        """
+        start_time = time.time()
+        
+        # Use GenerationConfig if provided, otherwise fall back to legacy parameters
+        if config is not None:
+            # Override config values with explicitly passed parameters
+            if max_new_tokens != 8192:  # If not default, override
+                config.max_tokens = max_new_tokens
+            if temperature != 0.7:
+                config.temperature = temperature
+            if response_format is not None and response_format != {"type": "text"}:
+                config.response_format = response_format
+            if reasoning_effort is not None:
+                config.reasoning_effort = reasoning_effort
+            if return_thinking:
+                if config.chat_template_kwargs is None:
+                    config.chat_template_kwargs = {}
+                config.chat_template_kwargs["enable_thinking"] = True
+            
+            # Convert config to OpenAI parameters based on backend
+            api_params = config.to_openai_params(backend=self.backend)
+            extra_body_params = config.to_extra_body(backend=self.backend)
+        else:
+            # Legacy parameter handling
+            extra_body_params = {
+                "chat_template_kwargs": {"enable_thinking": False if reasoning_effort is None else True}
+            }
+        
+            # For pure OpenAI/Azure API, map repetition_penalty to frequency_penalty and presence_penalty
+            if self.backend in ["openai", "azure"]:
+                if repetition_penalty is not None:
+                    # Split the effect between frequency and presence penalties
+                    penalty_value = min(2.0, max(0.0, (repetition_penalty - 1.0) * 2.0))
+                    if frequency_penalty is None:
+                        frequency_penalty = penalty_value * 0.7  # 70% weight on frequency
+                    if presence_penalty is None:
+                        presence_penalty = penalty_value * 0.3   # 30% weight on presence
+            else:
+                # For vLLM, SGLang, TensorRT servers and other APIs, use repetition_penalty directly
+                if repetition_penalty is not None:
+                    extra_body_params["repetition_penalty"] = repetition_penalty
+            
+            api_params = {
+                "max_tokens": max_new_tokens,
+                "temperature": temperature,
+                "frequency_penalty": NOT_GIVEN if frequency_penalty is None else frequency_penalty,
+                "presence_penalty": NOT_GIVEN if presence_penalty is None else presence_penalty,
+                "response_format": response_format if response_format is not None else {"type": "text"},
+                "timeout": 120,
+                "reasoning_effort": NOT_GIVEN if reasoning_effort is None else reasoning_effort,
+            }
+        
+        # Only include extra_body if it has content
+        if extra_body_params and extra_body_params != NOT_GIVEN:
+            response = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=message,
+                extra_body=extra_body_params,
+                **api_params
+            )
+        else:
+            response = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=message,
+                **api_params
+            )
         time_cost = time.time() - start_time
         content = response.choices[0].message.content
         if content is None and hasattr(response.choices[0].message, 'reasoning_content'):
@@ -139,12 +270,141 @@ class LLMGenerator():
             completion_usage_dict['time'] = time_cost
             return content, completion_usage_dict
 
-    def generate_response(self, batch_messages, do_sample=True, max_new_tokens=8192,
-                             temperature=0.7, frequency_penalty=None, repetition_penalty=None,
-                             response_format={"type": "text"},
+    @retry_decorator
+    def _local_inference(self, message, config: Optional[GenerationConfig] = None,
+                        max_new_tokens=8192,
+                        temperature=0.7,
+                        repetition_penalty=None,
+                        return_text_only=True,
+                        return_thinking=False,
+                        **kwargs):
+        """
+        Local inference for vLLM offline, SGLang, or TensorRT-LLM.
+        
+        Args:
+            message: The message(s) to send to the local engine
+            config: GenerationConfig object (preferred)
+            max_new_tokens: Legacy parameter
+            temperature: Legacy parameter
+            repetition_penalty: Legacy parameter
+            return_text_only: Whether to return only text or include usage stats
+            return_thinking: Whether to include thinking tokens
+            **kwargs: Additional parameters
+        """
+        start_time = time.time()
+        
+        # Create config from legacy parameters if not provided
+        if config is None:
+            config = GenerationConfig(
+                max_tokens=max_new_tokens,
+                temperature=temperature,
+                repetition_penalty=repetition_penalty
+            )
+        
+        # Format messages for local inference
+        if isinstance(message, list) and len(message) > 0 and isinstance(message[0], dict):
+            # Chat format messages
+            formatted_input = self._format_messages_for_local(message)
+        else:
+            formatted_input = message
+        
+        # Generate based on inference type
+        if self.inference_type == "vllm":
+            # vLLM offline engine
+            from vllm import SamplingParams
+            sampling_params = SamplingParams(**config.to_vllm_params())
+            outputs = self.client.generate(formatted_input, sampling_params)
+            content = outputs[0].outputs[0].text.strip()
+            
+        elif self.inference_type == "sglang":
+            # SGLang runtime
+            generation_params = config.to_sglang_params()
+            outputs = self.client.generate(formatted_input, **generation_params)
+            if isinstance(outputs, list):
+                content = outputs[0].strip()
+            else:
+                content = outputs.strip()
+                
+        elif self.inference_type == "tensorrt":
+            # TensorRT-LLM
+            generation_params = config.to_tensorrt_params()
+            outputs = self.client.generate(formatted_input, **generation_params)
+            if isinstance(outputs, list):
+                content = outputs[0].strip()
+            else:
+                content = outputs.strip()
+        
+        else:
+            raise ValueError(f"Unsupported local inference type: {self.inference_type}")
+        
+        time_cost = time.time() - start_time
+        
+        # Apply validation if provided
+        validate_function = kwargs.get('validate_function', None)
+        if validate_function:
+            content = validate_function(content, **kwargs)
+        
+        # Process thinking tags
+        if '</think>' in content and not return_thinking:
+            content = content.split('</think>')[-1].strip()
+        
+        if return_text_only:
+            return content
+        else:
+            completion_usage_dict = {
+                'completion_tokens': len(content.split()),
+                'time': time_cost
+            }
+            return content, completion_usage_dict
+
+
+    def generate_response(self, batch_messages, config: Optional[GenerationConfig] = None,
+                             do_sample=None, max_new_tokens=None,
+                             temperature=None, frequency_penalty=None, repetition_penalty=None,
+                             response_format=None,
                              return_text_only=True, return_thinking=False, reasoning_effort=None, **kwargs):
-        if temperature == 0.0:
-            do_sample = False
+        """
+        Generate responses using self.config as default, with optional parameter overrides.
+        Automatically routes to the appropriate inference method based on inference_type.
+        
+        Args:
+            batch_messages: Single message (list of dict) or batch (list of list of dict)
+            config: GenerationConfig object (overrides self.config completely if provided)
+            do_sample: Override self.config.do_sample if provided
+            max_new_tokens: Override self.config.max_tokens if provided
+            temperature: Override self.config.temperature if provided
+            frequency_penalty: Override self.config.frequency_penalty if provided
+            repetition_penalty: Override self.config.repetition_penalty if provided
+            response_format: Override self.config.response_format if provided
+            reasoning_effort: Override self.config.reasoning_effort if provided
+            return_text_only: Whether to return only text or include usage stats
+            return_thinking: Whether to include thinking tokens
+            **kwargs: Additional parameters
+        """
+        # Use provided config or create temporary config from self.config with overrides
+        if config is None:
+            # Create a copy of self.config
+            from copy import deepcopy
+            config = deepcopy(self.config)
+            
+            # Apply overrides if provided
+            if max_new_tokens is not None:
+                config.max_tokens = max_new_tokens
+            if temperature is not None:
+                config.temperature = temperature
+                if temperature == 0.0:
+                    config.do_sample = False
+            if do_sample is not None:
+                config.do_sample = do_sample
+            if frequency_penalty is not None:
+                config.frequency_penalty = frequency_penalty
+            if repetition_penalty is not None:
+                config.repetition_penalty = repetition_penalty
+            if response_format is not None:
+                config.response_format = response_format
+            if reasoning_effort is not None:
+                config.reasoning_effort = reasoning_effort
+        
         # single = list of dict, batch = list of list of dict
         is_batch = isinstance(batch_messages[0], list)
         if not is_batch:
@@ -152,17 +412,22 @@ class LLMGenerator():
         batch_size = len(batch_messages)
         results = [None] * len(batch_messages)
         to_process = list(range(len(batch_messages)))
-        if self.inference_type == "openai":
-            max_workers = self.max_workers  # Default to 4 workers if not specified
+        
+        # Route to appropriate inference method based on inference_type
+        if self.inference_type == "api":
+            # OpenAI-compatible API inference (OpenAI, Azure, vLLM server, SGLang server, etc.)
+            max_workers = self.max_workers
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
                 def process_message(i):
                     try:
                         return self._api_inference(
-                            batch_messages[i], max_new_tokens, temperature,
-                            frequency_penalty, repetition_penalty, response_format, 
-                            return_text_only, return_thinking, reasoning_effort, **kwargs
+                            batch_messages[i], config=config,
+                            return_text_only=return_text_only, 
+                            return_thinking=return_thinking, 
+                            **kwargs
                         )
                     except Exception as e:
+                        print(f"API inference error: {e}")
                         return "[]"
                 futures = [executor.submit(process_message, i) for i in to_process]
             for i, future in enumerate(futures):
@@ -170,22 +435,42 @@ class LLMGenerator():
                     results[i] = future.result()
                 except Exception as e:
                     print(f"Future {i} failed: {str(e)}")
-                    results[i] = '[]'  # Fallback to empty list on failure
+                    results[i] = '[]'
+
+        elif self.inference_type in ["vllm", "sglang", "tensorrt"]:
+            # Local inference engines (vLLM offline, SGLang, TensorRT-LLM)
+            max_retries = kwargs.get('max_retries', 3)
+            
+            for i in to_process:
+                retry_count = 0
+                success = False
+                
+                while retry_count <= max_retries and not success:
+                    try:
+                        result = self._local_inference(
+                            batch_messages[i],
+                            config=config,
+                            return_text_only=return_text_only,
+                            return_thinking=return_thinking,
+                            **kwargs
+                        )
+                        results[i] = result
+                        success = True
+                    except Exception as e:
+                        retry_count += 1
+                        if retry_count > max_retries:
+                            print(f"Local inference failed for message {i} after {max_retries} retries: {e}")
+                            results[i] = "[]" if return_text_only else ("[]", {'completion_tokens': 0, 'time': 0})
+                        else:
+                            print(f"Retry {retry_count}/{max_retries} for message {i}: {e}")
 
         elif self.inference_type == "pipeline":
-            max_retries = kwargs.get('max_retries', 3)  # Default to 3 retries if not specified
+            # HuggingFace Transformers pipeline
+            max_retries = kwargs.get('max_retries', 3)
             start_time = time.time()
-            # Build generation kwargs
-            generation_kwargs = {
-                "max_new_tokens": max_new_tokens,
-                "temperature": temperature,
-                "do_sample": do_sample,
-                "return_full_text": False
-            }
             
-            # Add repetition_penalty if provided
-            if repetition_penalty is not None:
-                generation_kwargs["repetition_penalty"] = repetition_penalty
+            # Convert config to HuggingFace parameters
+            generation_kwargs = config.to_huggingface_params()
             
             # Initial processing of all messages
             responses = self.client(
@@ -211,22 +496,16 @@ class LLMGenerator():
             # Retry failed messages in batches
             for attempt in range(max_retries):
                 if not failed_indices:
-                    break  # No more failures to retry
+                    break
                 print(f"Retry attempt {attempt + 1}/{max_retries} for {len(failed_indices)} failed messages")
-                # Prepare batch of failed messages
                 failed_messages = [batch_messages[i] for i in failed_indices]
                 try:
-                    # Process failed messages as a batch
                     retry_responses = self.client(
                         failed_messages,
-                        max_new_tokens=max_new_tokens,
-                        temperature=temperature,
-                        do_sample=do_sample,
-                        return_full_text=False
+                        **generation_kwargs
                     )
                     retry_contents = [resp[0]['generated_text'].strip() for resp in retry_responses]
                     
-                    # Validate retry results and update contents
                     new_failed_indices = []
                     for j, i in enumerate(failed_indices):
                         try:
@@ -236,15 +515,14 @@ class LLMGenerator():
                         except Exception as e:
                             print(f"Validation failed for index {i} on retry {attempt + 1}: {e}")
                             new_failed_indices.append(i)
-                    failed_indices = new_failed_indices  # Update failed indices for next retry
+                    failed_indices = new_failed_indices
                 except Exception as e:
                     print(f"Batch retry {attempt + 1} failed: {e}")
-                    # If batch processing fails, keep all indices in failed_indices
                     if attempt == max_retries - 1:
                         for i in failed_indices:
-                            contents[i] = ""  # Set to "" if all retries fail
+                            contents[i] = ""
             
-            # Set remaining failed messages to "" after all retries
+            # Set remaining failed messages to ""
             for i in failed_indices:
                 contents[i] = ""
             
@@ -260,38 +538,41 @@ class LLMGenerator():
                     'time': time_cost / len(batch_messages)
                 } for content in contents]
                 results = list(zip(contents, usage_dicts))
+        
         return results[0] if not is_batch else results
 
-    def generate_cot(self, question, max_new_tokens=1024):
+    # the function belows are all constructed for specific prompting and based on _api_inference and _local_inference
+
+    def generate_cot(self, question, max_new_tokens=None):
         messages = [
             {"role": "system", "content": "".join(cot_system_instruction_no_doc)},
             {"role": "user", "content": question},
         ]
         return self.generate_response(messages, max_new_tokens=max_new_tokens)
 
-    def generate_with_context(self, question, context, max_new_tokens=1024, temperature = 0.7):
+    def generate_with_context(self, question, context, max_new_tokens=None, temperature=None):
         messages = [
             {"role": "system", "content": "".join(cot_system_instruction)},
             {"role": "user", "content": f"{context}\n\n{question}\nThought:"},
         ]
-        return self.generate_response(messages, max_new_tokens=max_new_tokens, temperature = temperature)
+        return self.generate_response(messages, max_new_tokens=max_new_tokens, temperature=temperature)
 
-    def generate_with_context_one_shot(self, question, context, max_new_tokens=4096, temperature = 0.7):
+    def generate_with_context_one_shot(self, question, context, max_new_tokens=None, temperature=None):
         messages = deepcopy(prompt_template)
         messages.append(
             {"role": "user", "content": f"{context}\n\nQuestions:{question}\nThought:"},
         )
-        return self.generate_response(messages, max_new_tokens=max_new_tokens, temperature = temperature)
+        return self.generate_response(messages, max_new_tokens=max_new_tokens, temperature=temperature)
     
-    def generate_with_context_kg(self, question, context, max_new_tokens=1024, temperature = 0.7):
+    def generate_with_context_kg(self, question, context, max_new_tokens=None, temperature=None):
         messages = [
             {"role": "system", "content": "".join(cot_system_instruction_kg)},
             {"role": "user", "content": f"{context}\n\n{question}"},
         ]
-        return self.generate_response(messages, max_new_tokens=max_new_tokens, temperature = temperature)
+        return self.generate_response(messages, max_new_tokens=max_new_tokens, temperature=temperature)
         
     @retry_decorator
-    def filter_triples_with_entity_event(self,question, triples):
+    def filter_triples_with_entity_event(self, question, triples, max_new_tokens=None, temperature=None):
         messages = deepcopy(filter_triple_messages)
         messages.append(
             {"role": "user", "content": f"""[ ## question ## ]]
@@ -304,15 +585,21 @@ class LLMGenerator():
                 "schema": filter_fact_json_schema,
                 "fix_function": fix_filter_triplets,
             }
-            response = self.generate_response(messages, max_new_tokens=4096, temperature=0.0, response_format={"type": "json_object"},
-                                               validate_function=validate_output, **validate_args)
+            response = self.generate_response(
+                messages,
+                max_new_tokens=max_new_tokens if max_new_tokens is not None else 4096,
+                temperature=temperature if temperature is not None else 0.0,
+                response_format={"type": "json_object"},
+                validate_function=validate_output,
+                **validate_args
+            )
             return response
         except Exception as e:
             # If all retries fail, return the original triples
             return triples
         
     @retry(stop=(stop_after_delay(60) | stop_after_attempt(6)), wait=wait_fixed(2))
-    def large_kg_filter_keywords_with_entity(self, question, keywords):
+    def large_kg_filter_keywords_with_entity(self, question, keywords, max_new_tokens=None, temperature=None):
         messages = deepcopy(keyword_filtering_prompt)
         
         messages.append({
@@ -324,7 +611,12 @@ class LLMGenerator():
         })
         
         try:
-            response = self.generate_response(messages, response_format={"type": "json_object"}, temperature=0.0, max_new_tokens=2048)
+            response = self.generate_response(
+                messages, 
+                response_format={"type": "json_object"}, 
+                temperature=temperature if temperature is not None else 0.0,
+                max_new_tokens=max_new_tokens if max_new_tokens is not None else 2048
+            )
             
             # Validate and clean the response
             cleaned_data = validate_output(response, lkg_keyword_json_schema, fix_lkg_keywords)
@@ -341,7 +633,7 @@ class LLMGenerator():
         return self.generate_response(messages)
     
     @retry(stop=(stop_after_delay(60) | stop_after_attempt(6)), wait=wait_fixed(2))
-    def large_kg_ner(self, text, simple_ner = False):
+    def large_kg_ner(self, text, simple_ner=False, max_new_tokens=None, temperature=None, frequency_penalty=None):
         if not simple_ner:
             messages = deepcopy(ner_prompt)
             messages.append(
@@ -370,7 +662,15 @@ class LLMGenerator():
             "fix_function": fix_lkg_keywords
         }
         # Generate raw response from LLM
-        raw_response = self.generate_response(messages, max_new_tokens=4096, temperature=0.7, frequency_penalty=1.1, response_format={"type": "json_object"}, validate_output=validate_output, **validation_args)
+        raw_response = self.generate_response(
+            messages, 
+            max_new_tokens=max_new_tokens if max_new_tokens is not None else 4096,
+            temperature=temperature if temperature is not None else 0.7,
+            frequency_penalty=frequency_penalty if frequency_penalty is not None else 1.1,
+            response_format={"type": "json_object"},
+            validate_function=validate_output,
+            **validation_args
+        )
         
         try:
             # Validate and clean the response
@@ -381,7 +681,7 @@ class LLMGenerator():
             return []  # Fallback to empty list or raise custom exception
  
     @retry(stop=(stop_after_delay(60) | stop_after_attempt(6)), wait=wait_fixed(2))
-    def large_kg_tog_ner(self, text):
+    def large_kg_tog_ner(self, text, max_new_tokens=None, temperature=None, frequency_penalty=None):
         messages = deepcopy(simple_ner_prompt)
         messages.append(
             {
@@ -401,7 +701,15 @@ class LLMGenerator():
             "schema": lkg_keyword_json_schema,
             "fix_function": fix_lkg_keywords
         }
-        raw_response = self.generate_response(messages, max_new_tokens=4096, temperature=0.7, frequency_penalty=1.1, response_format={"type": "json_object"}, validate_output=validate_output, **validation_args)
+        raw_response = self.generate_response(
+            messages,
+            max_new_tokens=max_new_tokens if max_new_tokens is not None else 4096,
+            temperature=temperature if temperature is not None else 0.7,
+            frequency_penalty=frequency_penalty if frequency_penalty is not None else 1.1,
+            response_format={"type": "json_object"},
+            validate_function=validate_output,
+            **validation_args
+        )
         
         try:
             # Validate and clean the response
@@ -411,7 +719,7 @@ class LLMGenerator():
         except (json.JSONDecodeError, jsonschema.ValidationError) as e:
             return []  # Fallback to empty list or raise custom exception
 
-    def generate_with_react(self, question, context=None, max_new_tokens=1024, search_history=None, logger=None):
+    def generate_with_react(self, question, context=None, max_new_tokens=None, search_history=None, logger=None):
         react_system_instruction = (
             'You are an advanced AI assistant that uses the ReAct framework to solve problems through iterative search. '
             'Follow these steps in your response:\n'
@@ -453,12 +761,23 @@ class LLMGenerator():
         if logger:
             logger.info(f"Messages for ReAct generation: {search_history}Question: {question}")
         return self.generate_response(messages, max_new_tokens=max_new_tokens)
-
-    
-    def triple_extraction(self, messages, result_schema, max_tokens=4096, stage=None, 
+  
+    def triple_extraction(self, messages, result_schema, max_tokens=None, 
                      record=False, allow_empty=True, repetition_penalty=None):
+        """
+        Extract triples from messages with JSON validation using self.config as default.
+        
+        Args:
+            messages: Single message (list of dict) or batch (list of list of dict)
+            result_schema: JSON schema for validation
+            max_tokens: Override self.config.max_tokens if provided
+            repetition_penalty: Override self.config.repetition_penalty if provided
+            record: Whether to return usage statistics
+            allow_empty: Whether to allow empty results on validation failure
+        """
         if isinstance(messages[0], dict):
             messages = [messages]
+            
         validate_kwargs = {
             'schema': result_schema,
             'fix_function': fix_triple_extraction_response, # modify the fix according to provided schema
@@ -467,8 +786,10 @@ class LLMGenerator():
         try:
             result = self.generate_response(
                 messages, 
-                max_new_tokens=max_tokens, 
+                max_new_tokens=max_tokens,
                 repetition_penalty=repetition_penalty,
+                # TODO: Update to support json_object for formatting with LLM
+                # response_format={"type": "json_object"},
                 validate_function=validate_output, 
                 return_text_only=not record, 
                 **validate_kwargs
