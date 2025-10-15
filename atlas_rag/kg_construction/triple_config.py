@@ -26,7 +26,7 @@ class ProcessingConfig:
     triple_extraction_prompt_path: str = None
     triple_extraction_schema_path: str = None
     # Override LLM generation parameters for backward compatibility
-    max_new_tokens: int = 8192
-    repetition_penalty: float = 1.0
+    max_new_tokens: int = None
+    repetition_penalty: float = None
     # for benchmarking the gpu-hour of first 100 document
     benchmark : bool = False
