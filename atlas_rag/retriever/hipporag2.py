@@ -36,6 +36,7 @@ class HippoRAG2Retriever(BasePassageRetriever):
                  **kwargs):
         self.llm_generator = llm_generator
         self.sentence_encoder = sentence_encoder
+        self.inference_config = inference_config if inference_config is not None else InferenceConfig()
 
         self.node_list = data["node_list"]
         self.edge_list = data["edge_list"]
@@ -61,7 +62,7 @@ class HippoRAG2Retriever(BasePassageRetriever):
             self.logging = False
         else:
             self.logging = True
-        
+
         hipporag2mode = self.inference_config.hipporag_mode if inference_config is not None else "query2edge"
         if hipporag2mode == "query2edge":
             self.retrieve_node_fn = self.query2edge
