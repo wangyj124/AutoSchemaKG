@@ -300,7 +300,8 @@ class SentenceEmbedding(BaseEmbeddingModel):
                     kwargs = {k: v for k, v in kwargs.items() if k in model_kwargs}
             except Exception:
                 # If we can't determine supported kwargs, use filtered_kwargs as is
-                pass
+                available_kwargs_key = ['normalize_embeddings', 'show_progress_bar', 'batch_size']
+                kwargs = {k: v for k, v in kwargs.items() if k in available_kwargs_key}
         
         return self.sentence_encoder.encode(query, **kwargs)
     
