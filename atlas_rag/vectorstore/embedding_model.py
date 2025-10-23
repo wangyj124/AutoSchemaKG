@@ -275,10 +275,33 @@ class NvEmbed(BaseEmbeddingModel):
         return query_embeddings
 
 class SentenceEmbedding(BaseEmbeddingModel):
-    def __init__(self,sentence_encoder:SentenceTransformer):
+    def __init__(self, sentence_encoder: SentenceTransformer):
         self.sentence_encoder = sentence_encoder
 
     def encode(self, query, **kwargs):
+        """
+        Encode the query into embeddings.
+        
+        Args:
+            query: Input text or list of texts.
+            **kwargs: Additional arguments (filters out unsupported kwargs).
+        
+        Returns:
+            Embeddings as a NumPy array.
+        """
+
+        # Check if the model accepts additional kwargs by inspecting get_model_kwargs
+        if hasattr(self.sentence_encoder, 'get_model_kwargs'):
+            try:
+                # Get the list of accepted kwargs from the model
+                model_kwargs = self.sentence_encoder.get_model_kwargs()
+                if model_kwargs is not None:
+                    # Only pass kwargs that are in model_kwargs
+                    kwargs = {k: v for k, v in kwargs.items() if k in model_kwargs}
+            except Exception:
+                # If we can't determine supported kwargs, use filtered_kwargs as is
+                pass
+        
         return self.sentence_encoder.encode(query, **kwargs)
     
 
