@@ -1,8 +1,6 @@
-from azure.ai.projects import AIProjectClient
 from atlas_rag.kg_construction.triple_extraction import KnowledgeGraphExtractor
 from atlas_rag.kg_construction.triple_config import ProcessingConfig
-from azure.identity import DefaultAzureCredential
-from atlas_rag.llm_generator import LLMGenerator
+from atlas_rag.llm_generator import LLMGenerator, GenerationConfig
 from configparser import ConfigParser
 from argparse import ArgumentParser
 from openai import OpenAI
@@ -30,22 +28,23 @@ if __name__ == "__main__":
     # model_name = "Qwen/Qwen3-8B"
     # model_name = "Qwen/Qwen3-30B-A3B-Instruct-2507"
     client = OpenAI(
-        base_url="http://localhost:8137/v1",
+        base_url="http://localhost:8135/v1",
         api_key="EMPTYKEY",
     )
     # test client
     # check if model name has / if yes then split and use -1
+
     triple_generator = LLMGenerator(client, model_name=model_name,max_workers=6)
     if '/' in model_name:
         model_name = model_name.split('/')[-1]
     start_time = time.time()
     kg_extraction_config = ProcessingConfig(
         model_path=model_name,
-        data_directory="/data/httsangaj/atomic-rag/cc_en_head",
+        data_directory="/data/AutoSchema/processed_data/cc_en_head",
         filename_pattern=keyword,
         batch_size_triple=16,
         batch_size_concept=64,
-        output_directory=f'/data/httsangaj/atomic-rag/cc_en_head/{model_name}',
+        output_directory=f'/data/AutoSchema/processed_data/cc_en_head/{model_name}',
         current_shard_triple=args.shard,
         total_shards_triple=args.total_shards,
         record=True,

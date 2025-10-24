@@ -1,7 +1,7 @@
-from azure.ai.projects import AIProjectClient
+# from azure.ai.projects import AIProjectClient
 from atlas_rag.kg_construction.triple_extraction import KnowledgeGraphExtractor
 from atlas_rag.kg_construction.triple_config import ProcessingConfig
-from azure.identity import DefaultAzureCredential
+# from azure.identity import DefaultAzureCredential
 from atlas_rag.llm_generator import LLMGenerator
 from configparser import ConfigParser
 from argparse import ArgumentParser
@@ -40,11 +40,11 @@ if __name__ == "__main__":
     start_time = time.time()
     kg_extraction_config = ProcessingConfig(
         model_path=model_name,
-        data_directory="/data/httsangaj/atomic-rag/cc_en_head",
+        data_directory="/data/AutoSchema/processed_data/cc_en_head",
         filename_pattern=keyword,
         batch_size_triple=16,
         batch_size_concept=64,
-        output_directory=f'/data/httsangaj/atomic-rag/cc_en_head/{model_name}',
+        output_directory=f'/data/AutoSchema/processed_data/cc_en_head/{model_name}',
         current_shard_triple=args.slice,
         total_shards_triple=args.total_slices,
         record=True,
