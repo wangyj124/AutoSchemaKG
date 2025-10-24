@@ -5,6 +5,7 @@ from typing import Optional, Union, Any
 from tenacity import retry, stop_after_attempt, stop_after_delay, wait_fixed, wait_exponential, wait_random, RetryCallState
 from copy import deepcopy
 from concurrent.futures import ThreadPoolExecutor
+import traceback
 
 from atlas_rag.llm_generator.prompt.rag_prompt import cot_system_instruction, cot_system_instruction_kg, cot_system_instruction_no_doc, prompt_template
 from atlas_rag.llm_generator.prompt.lkg_prompt import ner_prompt, keyword_filtering_prompt, simple_ner_prompt
@@ -50,10 +51,10 @@ def print_retry(retry_state: RetryCallState):
     instance = retry_state.args[0] if retry_state.args else None
     
     # Print the error that caused the retry
-    if retry_state.outcome.failed:
-        exception = retry_state.outcome.exception()
-        print(f"Error occurred: {type(exception).__name__}: {str(exception)}")
-    
+    exception = retry_state.outcome.exception()
+    stack_trace = ''.join(traceback.format_exception(type(exception), exception, exception.__traceback__))
+    print(f"Error occurred: {type(exception).__name__}: {str(exception)}\nStack trace:\n{stack_trace}")
+
     if instance and hasattr(instance, 'retry_count'):
         instance.retry_count += 1
         print(f"Retrying {retry_state.fn.__name__}: attempt {retry_state.attempt_number}, total retries: {instance.retry_count}")
