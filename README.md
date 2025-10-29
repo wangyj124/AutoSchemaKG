@@ -9,8 +9,8 @@ This project uses the following paper and data:
 *   **Neo4j CSV Dumps:** [Download the dataset](https://huggingface.co/datasets/AlexFanWei/AutoSchemaKG) (huggingface dataset)
 
 ### Update
-- (05/07) Update with batch generation and refactor the codebase. Add PDF-md-json instruction. [See PDF support](#pdf-support)
-- (24/06) Add: ToG, Chinese KG construction (refer to example_scripts for KG construction with different language). Separate NV-embed-v2 transformers dependency.
+- (05/07) Update with batch generation and refactor the codebase. Add comprehensive documentation for examples including PDF/Markdown conversion, multi-language processing, parallel generation, and custom extraction.
+- (24/06) Add: ToG, Chinese KG construction (refer to example/multilingual_processing.md for KG construction with different languages). Separate NV-embed-v2 transformers dependency.
 
 ## AutoSchemaKG Overview
 
@@ -44,31 +44,35 @@ AutoSchemaKG/
 │   ├── retriever/            # Retrieval components for RAG
 │   ├── utils/                # Utility functions for various tasks
 │   └── vectorstore/          # Components for managing vector storage and embeddings
-├── example/                  # Example directory
-│   ├── example_scripts/      # 
-│       ├── custom_extraction/    # 
-│       ├── neo4j_kg/             #
-│       ├── parallel_generation/  # 
-│   ├── example_data/         # Raw data (in json, md, pdf format) for KG construction input.
-│   ├── generated/ 
-├── example_scripts/          # Example scripts for usage demonstrations
-├── log/                      # Log files for tracking processes
-├── neo4j_api_host/           # API hosting for Neo4j
+├── example/                  # Comprehensive examples and tutorials
+│   ├── atlas_billion_kg_usage.ipynb      # Using ATLAS billion-scale KGs
+│   ├── atlas_full_pipeline.ipynb         # Complete KG construction pipeline
+│   ├── atlas_multihopqa.ipynb            # Multi-hop QA evaluation
+│   ├── example_data/                     # Sample datasets (JSON, Markdown, PDF)
+│   ├── example_scripts/                  # Production-ready scripts
+│   │   ├── benchmark_extraction_example/ # Time cost benchmarking
+│   │   ├── custom_extraction/            # Custom prompts and schemas
+│   │   ├── neo4j_kg/                     # Neo4j API hosting
+│   │   └── parallel_generation/          # Large-scale parallel processing
+│   ├── generated/                        # Output directory for generated KGs
+│   ├── hotpotqa_corpus_kg_input/         # Benchmark extraction results
+│   ├── pdf_md_conversion/                # PDF/Markdown conversion tools
+│   ├── multilingual_processing.md        # Multi-language KG construction guide
+│   └── readme.md                         # Example directory documentation
+├── EvaluateKGC/              # Knowledge graph quality evaluation
+├── EvaluateFactuality/       # Factual consistency evaluation (FELM)
+├── EvaluateGeneralTask/      # General performance evaluation (MMLU)
 ├── neo4j_scripts/            # Scripts for managing Neo4j databases
 ├── tests/                    # Unit tests for the project
-├── .gitignore                # Git ignore file
-├── README.md                 # Main documentation for the project
-├── atlas_billion_kg_usage.ipynb   # Example for hosting and RAG with ATLAS
-├── atlas_full_pipeline.ipynb       # Full pipeline for constructing knowledge graphs
-└── atlas_multihopqa.ipynb          # Example for benchmarking multi-hop QA datasets
+└── README.md                 # Main documentation for the project
 ```
 
 The project is organized into several key components:
-- `atlas_rag/`: Core package containing the main functionality
-- Evaluation directories for different aspects of the system
-- Database-related scripts and API hosting
-- Example notebooks demonstrating usage
-- Import and distribution directories for data management
+- **`atlas_rag/`**: Core package with KG construction, LLM generation, retrieval, and vector storage
+- **`example/`**: Complete tutorials, scripts, and sample data for various use cases
+- **Evaluation directories**: Comprehensive metrics for KG quality, factuality, and general performance
+- **`neo4j_scripts/`**: Database management and hosting utilities
+- **`tests/`**: Unit tests ensuring code reliability
 
 ## Install atlas-rag through pip
 ```bash
@@ -134,6 +138,31 @@ The `atlas_full_pipeline.ipynb` notebook demonstrates how to:
 - Build new knowledge graphs using AutoschemaKG
 - Implement Retrieval Augmented Generation on your custom knowledge graphs
 
+## Examples and Documentation
+
+The [`example/`](example/) directory provides comprehensive tutorials, scripts, and documentation for various use cases:
+
+- **[Example Directory Overview](example/readme.md)**: Complete guide to all examples and workflows
+- **[Multi-Language Processing](example/multilingual_processing.md)**: Build KGs in Chinese, Japanese, Korean, and more
+- **[PDF/Markdown Conversion](example/pdf_md_conversion/readme.md)**: Convert PDF documents for KG construction
+- **[Parallel Generation](example/example_scripts/parallel_generation/readme.md)**: Large-scale parallel KG processing
+- **[Custom Extraction](example/example_scripts/custom_extraction/readme.md)**: Define custom prompts and schemas
+- **[Benchmark Extraction](example/example_scripts/benchmark_extraction_example/readme.md)**: Time cost benchmarking
+- **[Neo4j KG Hosting](example/example_scripts/neo4j_kg/readme.md)**: Host KGs as Neo4j-compatible APIs
+
+### Quick Start Examples
+
+**Jupyter Notebooks:**
+- `example/atlas_billion_kg_usage.ipynb` - Using ATLAS billion-scale knowledge graphs
+- `example/atlas_full_pipeline.ipynb` - Complete KG construction pipeline
+- `example/atlas_multihopqa.ipynb` - Multi-hop QA evaluation
+
+**Sample Datasets:**
+- English corpus: `example/example_data/Dulce.json`
+- Chinese text: `example/example_data/multilingual_data/RomanceOfTheThreeKingdom-zh-CN.json`
+- PDF documents: `example/example_data/pdf_data/`
+- Markdown files: `example/example_data/md_data/`
+
 
 ## Multi-hop Question Answering Evaluation
 
@@ -180,8 +209,6 @@ If you use this code in your research, please cite our paper:
       url={https://arxiv.org/abs/2505.23628}, 
 }
 ```
-
-
 
 
 
