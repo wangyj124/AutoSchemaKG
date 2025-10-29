@@ -44,7 +44,13 @@ AutoSchemaKG/
 │   ├── retriever/            # Retrieval components for RAG
 │   ├── utils/                # Utility functions for various tasks
 │   └── vectorstore/          # Components for managing vector storage and embeddings
-├── example_data/             # Sample data for testing and examples
+├── example/                  # Example directory
+│   ├── example_scripts/      # 
+│       ├── custom_extraction/    # 
+│       ├── neo4j_kg/             #
+│       ├── parallel_generation/  # 
+│   ├── example_data/         # Raw data (in json, md, pdf format) for KG construction input.
+│   ├── generated/ 
 ├── example_scripts/          # Example scripts for usage demonstrations
 ├── log/                      # Log files for tracking processes
 ├── neo4j_api_host/           # API hosting for Neo4j
@@ -148,73 +154,16 @@ The framework includes comprehensive evaluation metrics across three dimensions:
 
 Detailed evaluation procedures can be found in the respective evaluation directories.
 
-## PDF Support
-Creator: [swgj](https://github.com/Swgj)
+## PDF and Markdown Support
 
-Due to the version requirement of marker-pdf, we suggest you to create a new conda environment for PDF-to-Markdown Transformation.
+AutoSchemaKG supports processing PDF documents for knowledge graph construction. For detailed instructions on converting PDFs to Markdown and then to JSON format suitable for KG construction, please refer to the [PDF/Markdown Conversion Guide](example/pdf_md_conversion/readme.md).
 
-Git clone PDF transform repo.
-``` bash
-git clone https://github.com/Swgj/pdf_process
-cd pdf_process
-conda create --name pdf-marker pip python=3.10
-conda activate pdf-marker
-pip install 'marker-pdf[full]'
-pip install google-genai
-```
-Modify the config.yaml file.
-``` yaml
-processing_config:
-  llm_service: "marker.services.azure_openai.AzureOpenAIService" # to use Azure OpenAI Service. To use default Gemini server, you can comment this line
-  other_config:
-    use_llm: true
-    extract_images: false  # false means not to extract images and use LLM for text description; true means extract images but not generate descriptions
-    page_range: null  # null means process all pages, or use List[int] format like [9, 10, 11, 12]
-    max_concurrency: 2 # maximum number of concurrent processes
-    #Azure OpenAI API configuration
-    azure_endpoint: <your endpoint>
-    azure_api_version: "2024-10-21"
-    deployment_name: "gpt-4o"
+**Quick Overview:**
+1. Convert PDF to Markdown using the [pdf_process](https://github.com/Swgj/pdf_process) tool
+2. Convert Markdown to JSON for AutoSchemaKG processing
+3. Use the JSON files in your KG construction pipeline
 
-# API configuration
-api:
-  # api_key_env: "GEMINI_API_KEY"  # Uncomment this line for Gemini API key
-  api_key_env: "AZURE_API_KEY"
-
-# Input path configuration - can be a file or folder path
-input:
-  # Supports relative and absolute paths
-  path: "test_data"  # Can be a single file path or folder path
-  # path: "data/Apple_Environmental_Progress_Report_2024.pdf"  # Example of a single file
-  
-  # If it's a folder, you can set file filtering conditions
-  file_filters:
-    extensions: [".pdf"]  # Only process PDF files
-    recursive: true       # Whether to recursively process subfolders
-    exclude_patterns:     # Exclude files that match these patterns
-      - "*temp*"
-      - "*~*"
-
-# Output configuration
-output:
-  base_dir: "md_output"     # Output directory
-  create_subdirs: true   # Whether to create a subdirectory for each input file
-  format: "md"           # Output format (md, txt)
-  
-# Logging configuration
-logging:
-  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
-  show_progress: true
-```
-
-Run
-```bash
-bash run.sh
-```
-Cheers! You have a Markdown version of your PDF file. You can now change directories back to your parent directory and run the command below to obtain your JSON file for further Atlas-RAG KG construction.
-```
-python -m atlas_rag.kg_construction.utils.md_processing.markdown_to_json --input example_data/md_data --output example_data
-```
+See the [complete documentation](example/pdf_md_conversion/readme.md) for setup instructions, configuration options, and usage examples.
 
 ## Citation
 
