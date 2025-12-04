@@ -96,7 +96,7 @@ triple_generator = LLMGenerator(client, model_name=model_name)
 kg_extraction_config = ProcessingConfig(
       model_path=model_name,
       data_directory="example_data",
-      filename_pattern=filename_pattern,
+      filename_pattern=keyword, # Will read the files with string filename_patterns in the data directory as input files
       batch_size_triple=3, # batch size for triple extraction
       batch_size_concept=16, # batch size for concept generation
       output_directory=f"{output_directory}",
