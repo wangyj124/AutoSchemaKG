@@ -111,7 +111,7 @@ kg_extractor.run_extraction() # Involved LLM Generation
 # Convert Triples Json to CSV
 kg_extractor.convert_json_to_csv()
 # Concept Generation
-kg_extractor.generate_concept_csv(batch_size=64) # Involved LLM Generation
+kg_extractor.generate_concept_csv_temp(batch_size=64) # Involved LLM Generation
 # Create Concept CSV
 kg_extractor.create_concept_csv()
 # Convert csv to graphml for networkx
