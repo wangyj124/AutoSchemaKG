@@ -2,6 +2,8 @@
 
 This repository contains the implementation of AutoSchemaKG, a novel framework for automatic knowledge graph construction that combines schema generation via conceptualization. The framework is designed to address the challenges of constructing high-quality knowledge graphs from unstructured text.
 
+Homepage and Documentation: https://hkust-knowcomp.github.io/AutoSchemaKG/
+
 This project uses the following paper and data:
 
 *   **Paper:** [Read the paper](https://arxiv.org/abs/2505.23628)
