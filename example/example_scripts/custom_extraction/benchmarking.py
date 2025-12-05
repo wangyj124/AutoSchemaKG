@@ -39,7 +39,7 @@ def main():
     llm_generator = LLMGenerator(client=client, model_name=reader_model_name)
 
     # Create embeddings and index
-    working_directory = f'/data/autograph/{args.graph_type}'
+    working_directory = f'example/example_scripts/custom_extraction/{args.graph_type}'
     data = create_embeddings_and_index(
         sentence_encoder=sentence_encoder,
         model_name=encoder_model_name,

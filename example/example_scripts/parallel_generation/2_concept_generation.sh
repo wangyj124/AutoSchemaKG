@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Configuration
-TOTAL_SHARDS=3
+TOTAL_SHARDS=4
 LOG_DIR="/home/httsangaj/projects/AutoSchemaKG/log"
 SCRIPT_DIR="/home/httsangaj/projects/AutoSchemaKG/example/example_scripts/parallel_generation"
-
+KEYWORD="2wikimultihopqa"
 # Base port number - each shard will use a different port
 BASE_PORT=8135
 
@@ -21,7 +21,8 @@ run_shard() {
         --shard "${shard_num}" \
         --total_shards "${TOTAL_SHARDS}" \
         --port "${port}" \
-        > "${LOG_DIR}/concept_shard_${shard_num}_port_${port}.log" 2>&1 &
+        --keyword "${KEYWORD}" \
+        > "${LOG_DIR}/concept_shard_${shard_num}_port_${port}_keyword_${KEYWORD}.log" 2>&1 &
     
     echo "  Process ID: $!"
 }

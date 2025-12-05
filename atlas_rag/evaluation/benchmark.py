@@ -93,8 +93,8 @@ class RAGBenchmark:
             data = data[:self.config.number_of_samples]
             print(f"Using only the first {self.config.number_of_samples} samples from the dataset")
         for sample in tqdm(data):
-            question = sample["question"]
-            answer = sample["answer"]
+            question = sample.get("question","")
+            answer = sample.get("answer", "")
 
             gold_file_ids = []
             gold_paragraphs = []
@@ -121,6 +121,11 @@ class RAGBenchmark:
                                 full_list_passages_contents.add(f"{text[0]}: {' '.join(text[1])}")
                                 full_list_passages_ids.add(text[0])
             elif self.config.dataset_name == "musique":
+                answer_list = []
+                answer_list.append(answer)
+                for answer in sample.get("answer_aliases", []):
+                    answer_list.append(answer)
+                answer = answer_list
                 for paragraph in sample["paragraphs"]:
                     if paragraph["is_supporting"]:
                         gold_file_ids.append(paragraph["paragraph_text"])
@@ -128,6 +133,22 @@ class RAGBenchmark:
                     else:
                         full_list_passages_contents.add(f'{paragraph["title"]}: {paragraph["paragraph_text"]}')
                         full_list_passages_ids.add(paragraph["paragraph_text"])
+            elif self.config.dataset_name == "hipporag_nq":
+                answer = sample.get("reference") # it is a list here
+                for context in sample["contexts"]:
+                    if context['is_supporting']:
+                        gold_file_ids.append(context["title"])
+                        gold_paragraphs.append(f"{context['title']}: {context['text']}")
+                    else:
+                        full_list_passages_contents.add(f"{context['title']}: {context['text']}")
+                        full_list_passages_ids.add(context["title"])
+            elif self.config.dataset_name == "hipporag_popqa":
+                gold_ans = set([sample['obj']] + [sample['possible_answers']] + [sample['o_wiki_title']] + [sample['o_aliases']])
+                gold_ans = list(gold_ans)
+                answer = gold_ans
+                for context in sample["paragraphs"]:
+                    gold_file_ids.append(context["title"])
+                    gold_paragraphs.append(f"{context['title']}: {context['text']}")
             else:
                 print("Dataset not supported")
                 continue
@@ -181,10 +202,12 @@ class RAGBenchmark:
                     elif isinstance(retriever, BasePassageRetriever):
                         retrieved_context = "\n".join(sorted_context)
                         llm_generated_answer = llm_generator.generate_with_context(question, retrieved_context, max_new_tokens=2048, temperature=0.0)
+                
                 if self.logging:
                     self.logger.info(f"{retriever.__class__.__name__} retrieved passages: {sorted_context}")
                     self.logger.info(f"{retriever.__class__.__name__} generated answer: {llm_generated_answer}")
-
+                    self.logger.info(f"Gold answer: {answer}")
+                    self.logger.info(f'Gold paragraphs: {gold_paragraphs}')
                 short_answer = qa_judge.split_answer(llm_generated_answer)
                 em, f1 = qa_judge.judge(short_answer, answer)
                 

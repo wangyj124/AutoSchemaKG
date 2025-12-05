@@ -16,8 +16,8 @@ triple_generator = LLMGenerator(client=client, model_name=args.model)
 filename_pattern = args.keyword
 # get model name for after slash
 dir_name = args.model.split("/")[-1]
-output_directory = f'/data/httsangaj/autograph/{dir_name}/{filename_pattern}'
-data_directory = f'benchmark_data/autograph/{filename_pattern}'
+output_directory = f'example/example_scripts/custom_extraction/{dir_name}/{filename_pattern}'
+data_directory = f'benchmark_data/{filename_pattern}'
 # triple_generator = LLMGenerator(client, model_name=model_name)
 model_name = args.model
 kg_extraction_config = ProcessingConfig(

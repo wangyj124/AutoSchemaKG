@@ -37,36 +37,44 @@ class QAJudger:
         # Standardize whitespace
         return ' '.join(answer.split())
 
-    def judge(self, generated_text: str, reference_text: str) -> Tuple[int, float]:
+    def judge(self, generated_text: str, reference_text: str|list) -> Tuple[int, float]:
         """Direct port of the original scoring logic"""
         # Extract answer from generated text
         pred_answer = self.split_answer(generated_text)
         
         # Normalize both answers
         pred_norm = self.normalize_answer(pred_answer)
-        ref_norm = self.normalize_answer(reference_text)
+        
+        if isinstance(reference_text, list):
+            ref_norm_list = [self.normalize_answer(ref) for ref in reference_text]
+        else:
+            ref_norm_list = [self.normalize_answer(reference_text)]
 
         # Exact match calculation
-        em = 1 if pred_norm == ref_norm else 0
+        em = 1 if pred_norm in ref_norm_list else 0
 
         # F1 calculation (direct port from QAF1Score)
-        pred_tokens = pred_norm.split()
-        ref_tokens = ref_norm.split()
-        
-        common = Counter(pred_tokens) & Counter(ref_tokens)
-        num_same = sum(common.values())
+        f1_list = []
+        for ref_norm in ref_norm_list:
+            pred_tokens = pred_norm.split()
+            ref_tokens = ref_norm.split()
+            
+            common = Counter(pred_tokens) & Counter(ref_tokens)
+            num_same = sum(common.values())
 
-        if num_same == 0:
-            return em, 0.0
+            if num_same == 0:
+                f1_list.append(0.0)
+                continue
 
-        precision = num_same / len(pred_tokens) if pred_tokens else 0.0
-        recall = num_same / len(ref_tokens) if ref_tokens else 0.0
+            precision = num_same / len(pred_tokens) if pred_tokens else 0.0
+            recall = num_same / len(ref_tokens) if ref_tokens else 0.0
 
-        if (precision + recall) == 0:
-            f1 = 0.0
-        else:
-            f1 = 2 * (precision * recall) / (precision + recall)
-
+            if (precision + recall) == 0:
+                f1 = 0.0
+            else:
+                f1 = 2 * (precision * recall) / (precision + recall)
+            f1_list.append(f1)
+        f1 = max(f1_list) if f1_list else 0.0
         return em, f1
 
     def recall_at_k(self, retrieved_text: list, reference_text: list, k: int) -> float:
