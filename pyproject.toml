@@ -45,10 +45,6 @@ dependencies = [
     "accelerate>=1.7.0",
     "nltk",
     "graphdatascience",
-    "azure-ai-projects",
-    "azure-cli",
-    "azure-ai-inference",
-    "azure-identity",
     "json_repair"
 ]
 [project.optional-dependencies]
