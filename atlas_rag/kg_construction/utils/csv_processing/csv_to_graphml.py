@@ -123,6 +123,12 @@ def csvs_to_graphml(triple_node_file, text_node_file, triple_edge_file, text_edg
     - synsets: List of synsets associated with the edge.
     
     '''
+    def safe_sanitize(value):
+        """Safely sanitize any value for XML output."""
+        if value is None:
+            return ""
+        return sanitize_xml_string(str(value))
+    
     g = nx.DiGraph()
     entity_to_id = {}
 
@@ -134,7 +140,7 @@ def csvs_to_graphml(triple_node_file, text_node_file, triple_edge_file, text_edg
             mapped_id = get_node_id(node_id, entity_to_id)
             # Check if node already exists to prevent duplicates
             if mapped_id not in g.nodes:
-                g.add_node(mapped_id, id=sanitize_xml_string(node_id), type=row["type"])
+                g.add_node(mapped_id, id=safe_sanitize(node_id), type=safe_sanitize(row["type"]))
 
     # Add text nodes
     with open(text_node_file, 'r') as f:
@@ -143,7 +149,10 @@ def csvs_to_graphml(triple_node_file, text_node_file, triple_edge_file, text_edg
             node_id = row["text_id:ID"]
             # Check if node already exists to prevent duplicates
             if node_id not in g.nodes:
-                g.add_node(sanitize_xml_string(node_id), file_id=sanitize_xml_string(node_id), id=row["original_text"], type="passage")
+                g.add_node(safe_sanitize(node_id), 
+                          file_id=safe_sanitize(node_id), 
+                          id=safe_sanitize(row["original_text"]), 
+                          type="passage")
 
     # Add concept nodes
     if concept_node_file is not None:
@@ -153,7 +162,10 @@ def csvs_to_graphml(triple_node_file, text_node_file, triple_edge_file, text_edg
                 node_id = row["concept_id:ID"]
                 # Check if node already exists to prevent duplicates
                 if node_id not in g.nodes:
-                    g.add_node(sanitize_xml_string(node_id), file_id="concept_file", id=row["name"], type="concept")
+                    g.add_node(safe_sanitize(node_id), 
+                              file_id="concept_file", 
+                              id=safe_sanitize(row["name"]), 
+                              type="concept")
 
     # Add file id for triple nodes and concept nodes when add the edges
     
@@ -165,23 +177,31 @@ def csvs_to_graphml(triple_node_file, text_node_file, triple_edge_file, text_edg
             end_id = get_node_id(row[":END_ID"], entity_to_id)
             # Check if edge already exists to prevent duplicates
             if not g.has_edge(start_id, end_id):
-                g.add_edge(start_id, end_id, relation=row["relation"], type=row[":TYPE"])
+                g.add_edge(start_id, end_id, 
+                          relation=safe_sanitize(row["relation"]), 
+                          type=safe_sanitize(row[":TYPE"]))
                 # Add file_id to start and end nodes if they are triple or concept nodes
                 for node_id in [start_id, end_id]:
                     if g.nodes[node_id]['type'] in ['triple', 'concept'] and 'file_id' not in g.nodes[node_id]:
-                        g.nodes[node_id]['file_id'] = row.get("file_id", "triple_file")
+                        g.nodes[node_id]['file_id'] = safe_sanitize(row.get("file_id", "triple_file"))
             
-            if include_concept:
-            # Add concepts to the edge
-                concepts = ast.literal_eval(row["concepts"])
-                for concept in concepts:
-                    if "concepts" not in g.edges[start_id, end_id]:
-                        g.edges[start_id, end_id]['concepts'] = str(concept)
-                    else:
-                        # Avoid duplicate concepts by checking if concept is already in the list
-                        current_concepts = g.edges[start_id, end_id]['concepts'].split(",")
-                        if str(concept) not in current_concepts:
-                            g.edges[start_id, end_id]['concepts'] += "," + str(concept)
+            if include_concept and "concepts" in row:
+                try:
+                    # Add concepts to the edge
+                    concepts = ast.literal_eval(row["concepts"])
+                    for concept in concepts:
+                        concept_str = safe_sanitize(concept)
+                        if "concepts" not in g.edges[start_id, end_id]:
+                            g.edges[start_id, end_id]['concepts'] = concept_str
+                        else:
+                            # Avoid duplicate concepts by checking if concept is already in the list
+                            current_concepts = g.edges[start_id, end_id]['concepts'].split(",")
+                            if concept_str not in current_concepts:
+                                g.edges[start_id, end_id]['concepts'] += "," + concept_str
+                except (ValueError, SyntaxError) as e:
+                    print(f"Warning: Could not parse concepts for edge {start_id}->{end_id}: {e}")
+                    # Skip malformed concepts
+                    pass
             
 
     # Add text edges
@@ -189,15 +209,18 @@ def csvs_to_graphml(triple_node_file, text_node_file, triple_edge_file, text_edg
         reader = csv.DictReader(f)
         for row in reader:
             start_id = get_node_id(row[":START_ID"], entity_to_id)
-            end_id = row[":END_ID"]
+            end_id = safe_sanitize(row[":END_ID"])
             # Check if edge already exists to prevent duplicates
             if not g.has_edge(start_id, end_id):
-                g.add_edge(start_id, end_id, relation="mention in", type=row[":TYPE"])
+                g.add_edge(start_id, end_id, 
+                          relation="mention in", 
+                          type=safe_sanitize(row[":TYPE"]))
                 # Add file_id to start node if it is a triple or concept node
                 if 'file_id' in g.nodes[start_id]:
-                    g.nodes[start_id]['file_id'] += "," + str(end_id)
+                    current_file_id = g.nodes[start_id]['file_id']
+                    g.nodes[start_id]['file_id'] = safe_sanitize(current_file_id + "," + str(end_id))
                 else:
-                    g.nodes[start_id]['file_id'] = str(end_id)
+                    g.nodes[start_id]['file_id'] = safe_sanitize(str(end_id))
 
     # Add concept edges between triple nodes and concept nodes
     if concept_edge_file is not None:
@@ -205,20 +228,38 @@ def csvs_to_graphml(triple_node_file, text_node_file, triple_edge_file, text_edg
             reader = csv.DictReader(f)
             for row in reader:
                 start_id = get_node_id(row[":START_ID"], entity_to_id)
-                end_id = row[":END_ID"] # end id is concept node id
+                end_id = safe_sanitize(row[":END_ID"])  # end id is concept node id
                 if not g.has_edge(start_id, end_id):
-                    g.add_edge(start_id, end_id, relation=row["relation"], type=row[":TYPE"])
+                    g.add_edge(start_id, end_id, 
+                              relation=safe_sanitize(row["relation"]), 
+                              type=safe_sanitize(row[":TYPE"]))
 
     # Write to GraphML
     # check if output file directory exists
     output_dir = os.path.dirname(output_file)
     if output_dir and not os.path.exists(output_dir):
         os.makedirs(output_dir)
-    nx.write_graphml(g, output_file, infer_numeric_types=True)
-    if validate_graphml(output_file):
-        print(f"Successfully created GraphML file: {output_file}")
-    else:
-        print(f"Failed to create valid GraphML file: {output_file}")
+    
+    try:
+        nx.write_graphml(g, output_file, infer_numeric_types=True)
+        if validate_graphml(output_file):
+            print(f"Successfully created GraphML file: {output_file}")
+        else:
+            print(f"Failed to create valid GraphML file: {output_file}")
+    except Exception as e:
+        print(f"Error writing GraphML file with numeric inference: {e}")
+        # Try writing without numeric type inference
+        try:
+            nx.write_graphml(g, output_file, infer_numeric_types=False)
+            print(f"Successfully created GraphML file (without numeric inference): {output_file}")
+        except Exception as e2:
+            print(f"Failed to write GraphML file even without numeric inference: {e2}")
+            # Save as pickle as fallback
+            pickle_file = output_file.replace('.graphml', '.pkl')
+            with open(pickle_file, 'wb') as f:
+                pickle.dump(g, f)
+            print(f"Saved graph as pickle file instead: {pickle_file}")
+            raise e2
 if __name__ == "__main__":
     import argparse
 

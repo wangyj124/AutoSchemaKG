@@ -2,15 +2,18 @@
 
 This repository contains the implementation of AutoSchemaKG, a novel framework for automatic knowledge graph construction that combines schema generation via conceptualization. The framework is designed to address the challenges of constructing high-quality knowledge graphs from unstructured text.
 
+Homepage and Documentation: https://hkust-knowcomp.github.io/AutoSchemaKG/
+
 This project uses the following paper and data:
 
 *   **Paper:** [Read the paper](https://arxiv.org/abs/2505.23628)
-*   **Full Data:** (onedrive (under maintenance))
+*   **Full Data:** [Download the dataset](https://huggingface.co/datasets/gzone0111/AutoSchemaKG/tree/main) (huggingface dataset)
 *   **Neo4j CSV Dumps:** [Download the dataset](https://huggingface.co/datasets/AlexFanWei/AutoSchemaKG) (huggingface dataset)
 
 ### Update
-- (05/07) Update with batch generation and refactor the codebase. Add PDF-md-json instruction. [See PDF support](#pdf-support)
-- (24/06) Add: ToG, Chinese KG construction (refer to example_scripts for KG construction with different language). Separate NV-embed-v2 transformers dependency.
+- (05/12) Add Documentation for atlas-rag package and example directory. Include quick start examples for knowledge graph construction, hosting, and multi-hop QA evaluation.
+- (05/07) Update with batch generation and refactor the codebase. Add comprehensive documentation for examples including PDF/Markdown conversion, multi-language processing, parallel generation, and custom extraction.
+- (24/06) Add: ToG, Chinese KG construction (refer to example/multilingual_processing.md for KG construction with different languages). Separate NV-embed-v2 transformers dependency.
 
 ## AutoSchemaKG Overview
 
@@ -44,25 +47,35 @@ AutoSchemaKG/
 │   ├── retriever/            # Retrieval components for RAG
 │   ├── utils/                # Utility functions for various tasks
 │   └── vectorstore/          # Components for managing vector storage and embeddings
-├── example_data/             # Sample data for testing and examples
-├── example_scripts/          # Example scripts for usage demonstrations
-├── log/                      # Log files for tracking processes
-├── neo4j_api_host/           # API hosting for Neo4j
+├── example/                  # Comprehensive examples and tutorials
+│   ├── atlas_billion_kg_usage.ipynb      # Using ATLAS billion-scale KGs
+│   ├── atlas_full_pipeline.ipynb         # Complete KG construction pipeline
+│   ├── atlas_multihopqa.ipynb            # Multi-hop QA evaluation
+│   ├── example_data/                     # Sample datasets (JSON, Markdown, PDF)
+│   ├── example_scripts/                  # Production-ready scripts
+│   │   ├── benchmark_extraction_example/ # Time cost benchmarking
+│   │   ├── custom_extraction/            # Custom prompts and schemas
+│   │   ├── neo4j_kg/                     # Neo4j API hosting
+│   │   └── parallel_generation/          # Large-scale parallel processing
+│   ├── generated/                        # Output directory for generated KGs
+│   ├── hotpotqa_corpus_kg_input/         # Benchmark extraction results
+│   ├── pdf_md_conversion/                # PDF/Markdown conversion tools
+│   ├── multilingual_processing.md        # Multi-language KG construction guide
+│   └── readme.md                         # Example directory documentation
+├── EvaluateKGC/              # Knowledge graph quality evaluation
+├── EvaluateFactuality/       # Factual consistency evaluation (FELM)
+├── EvaluateGeneralTask/      # General performance evaluation (MMLU)
 ├── neo4j_scripts/            # Scripts for managing Neo4j databases
 ├── tests/                    # Unit tests for the project
-├── .gitignore                # Git ignore file
-├── README.md                 # Main documentation for the project
-├── atlas_billion_kg_usage.ipynb   # Example for hosting and RAG with ATLAS
-├── atlas_full_pipeline.ipynb       # Full pipeline for constructing knowledge graphs
-└── atlas_multihopqa.ipynb          # Example for benchmarking multi-hop QA datasets
+└── README.md                 # Main documentation for the project
 ```
 
 The project is organized into several key components:
-- `atlas_rag/`: Core package containing the main functionality
-- Evaluation directories for different aspects of the system
-- Database-related scripts and API hosting
-- Example notebooks demonstrating usage
-- Import and distribution directories for data management
+- **`atlas_rag/`**: Core package with KG construction, LLM generation, retrieval, and vector storage
+- **`example/`**: Complete tutorials, scripts, and sample data for various use cases
+- **Evaluation directories**: Comprehensive metrics for KG quality, factuality, and general performance
+- **`neo4j_scripts/`**: Database management and hosting utilities
+- **`tests/`**: Unit tests ensuring code reliability
 
 ## Install atlas-rag through pip
 ```bash
@@ -128,6 +141,31 @@ The `atlas_full_pipeline.ipynb` notebook demonstrates how to:
 - Build new knowledge graphs using AutoschemaKG
 - Implement Retrieval Augmented Generation on your custom knowledge graphs
 
+## Examples and Documentation
+
+The [`example/`](example/) directory provides comprehensive tutorials, scripts, and documentation for various use cases:
+
+- **[Example Directory Overview](example/readme.md)**: Complete guide to all examples and workflows
+- **[Multi-Language Processing](example/multilingual_processing.md)**: Build KGs in Chinese, Japanese, Korean, and more
+- **[PDF/Markdown Conversion](example/pdf_md_conversion/readme.md)**: Convert PDF documents for KG construction
+- **[Parallel Generation](example/example_scripts/parallel_generation/readme.md)**: Large-scale parallel KG processing
+- **[Custom Extraction](example/example_scripts/custom_extraction/readme.md)**: Define custom prompts and schemas
+- **[Benchmark Extraction](example/example_scripts/benchmark_extraction_example/readme.md)**: Time cost benchmarking
+- **[Neo4j KG Hosting](example/example_scripts/neo4j_kg/readme.md)**: Host KGs as Neo4j-compatible APIs
+
+### Quick Start Examples
+
+**Jupyter Notebooks:**
+- `example/atlas_billion_kg_usage.ipynb` - Using ATLAS billion-scale knowledge graphs
+- `example/atlas_full_pipeline.ipynb` - Complete KG construction pipeline
+- `example/atlas_multihopqa.ipynb` - Multi-hop QA evaluation
+
+**Sample Datasets:**
+- English corpus: `example/example_data/Dulce.json`
+- Chinese text: `example/example_data/multilingual_data/RomanceOfTheThreeKingdom-zh-CN.json`
+- PDF documents: `example/example_data/pdf_data/`
+- Markdown files: `example/example_data/md_data/`
+
 
 ## Multi-hop Question Answering Evaluation
 
@@ -148,73 +186,16 @@ The framework includes comprehensive evaluation metrics across three dimensions:
 
 Detailed evaluation procedures can be found in the respective evaluation directories.
 
-## PDF Support
-Creator: [swgj](https://github.com/Swgj)
+## PDF and Markdown Support
 
-Due to the version requirement of marker-pdf, we suggest you to create a new conda environment for PDF-to-Markdown Transformation.
+AutoSchemaKG supports processing PDF documents for knowledge graph construction. For detailed instructions on converting PDFs to Markdown and then to JSON format suitable for KG construction, please refer to the [PDF/Markdown Conversion Guide](example/pdf_md_conversion/readme.md).
 
-Git clone PDF transform repo.
-``` bash
-git clone https://github.com/Swgj/pdf_process
-cd pdf_process
-conda create --name pdf-marker pip python=3.10
-conda activate pdf-marker
-pip install 'marker-pdf[full]'
-pip install google-genai
-```
-Modify the config.yaml file.
-``` yaml
-processing_config:
-  llm_service: "marker.services.azure_openai.AzureOpenAIService" # to use Azure OpenAI Service. To use default Gemini server, you can comment this line
-  other_config:
-    use_llm: true
-    extract_images: false  # false means not to extract images and use LLM for text description; true means extract images but not generate descriptions
-    page_range: null  # null means process all pages, or use List[int] format like [9, 10, 11, 12]
-    max_concurrency: 2 # maximum number of concurrent processes
-    #Azure OpenAI API configuration
-    azure_endpoint: <your endpoint>
-    azure_api_version: "2024-10-21"
-    deployment_name: "gpt-4o"
+**Quick Overview:**
+1. Convert PDF to Markdown using the [pdf_process](https://github.com/Swgj/pdf_process) tool
+2. Convert Markdown to JSON for AutoSchemaKG processing
+3. Use the JSON files in your KG construction pipeline
 
-# API configuration
-api:
-  # api_key_env: "GEMINI_API_KEY"  # Uncomment this line for Gemini API key
-  api_key_env: "AZURE_API_KEY"
-
-# Input path configuration - can be a file or folder path
-input:
-  # Supports relative and absolute paths
-  path: "test_data"  # Can be a single file path or folder path
-  # path: "data/Apple_Environmental_Progress_Report_2024.pdf"  # Example of a single file
-  
-  # If it's a folder, you can set file filtering conditions
-  file_filters:
-    extensions: [".pdf"]  # Only process PDF files
-    recursive: true       # Whether to recursively process subfolders
-    exclude_patterns:     # Exclude files that match these patterns
-      - "*temp*"
-      - "*~*"
-
-# Output configuration
-output:
-  base_dir: "md_output"     # Output directory
-  create_subdirs: true   # Whether to create a subdirectory for each input file
-  format: "md"           # Output format (md, txt)
-  
-# Logging configuration
-logging:
-  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
-  show_progress: true
-```
-
-Run
-```bash
-bash run.sh
-```
-Cheers! You have a Markdown version of your PDF file. You can now change directories back to your parent directory and run the command below to obtain your JSON file for further Atlas-RAG KG construction.
-```
-python -m atlas_rag.kg_construction.utils.md_processing.markdown_to_json --input example_data/md_data --output example_data
-```
+See the [complete documentation](example/pdf_md_conversion/readme.md) for setup instructions, configuration options, and usage examples.
 
 ## Citation
 
@@ -231,8 +212,6 @@ If you use this code in your research, please cite our paper:
       url={https://arxiv.org/abs/2505.23628}, 
 }
 ```
-
-
 
 
 

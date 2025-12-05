@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "atlas-rag"
-version = "0.0.4.post2"
+version = "0.0.5"
 authors = [
     {name = "Jiaxin Bai", email = "jbai@connect.ust.hk"},
     {name = "Hong Ting TSANG", email = "httsangaj@connect.ust.hk"},
@@ -28,7 +28,7 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 dependencies = [
-    "numpy>=1.26.0, <2.0.0",
+    "numpy",
     "networkx>=3.1",
     "tqdm>=4.65.0",
     "jsonschema>=4.17.3",
@@ -45,10 +45,6 @@ dependencies = [
     "accelerate>=1.7.0",
     "nltk",
     "graphdatascience",
-    "azure-ai-projects",
-    "azure-cli",
-    "azure-ai-inference",
-    "azure-identity",
     "json_repair"
 ]
 [project.optional-dependencies]
