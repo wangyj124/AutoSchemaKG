@@ -5,10 +5,11 @@ This repository contains the implementation of AutoSchemaKG, a novel framework f
 This project uses the following paper and data:
 
 *   **Paper:** [Read the paper](https://arxiv.org/abs/2505.23628)
-*   **Full Data:** [Download the dataset](https://hkustconnect-my.sharepoint.com/:f:/g/personal/httsangaj_connect_ust_hk/EgpZiquW1dNCniDY_3O7WbIBMrHkXT1dFis7rhfeHZ_AOQ?e=zXF3Yg) (onedrive)
+*   **Full Data:** [Download the dataset](https://huggingface.co/datasets/gzone0111/AutoSchemaKG/tree/main) (huggingface dataset)
 *   **Neo4j CSV Dumps:** [Download the dataset](https://huggingface.co/datasets/AlexFanWei/AutoSchemaKG) (huggingface dataset)
 
 ### Update
+- (05/12) Add Documentation for atlas-rag package and example directory. Include quick start examples for knowledge graph construction, hosting, and multi-hop QA evaluation.
 - (05/07) Update with batch generation and refactor the codebase. Add comprehensive documentation for examples including PDF/Markdown conversion, multi-language processing, parallel generation, and custom extraction.
 - (24/06) Add: ToG, Chinese KG construction (refer to example/multilingual_processing.md for KG construction with different languages). Separate NV-embed-v2 transformers dependency.
 
