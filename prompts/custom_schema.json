@@ -1,0 +1,24 @@
+{
+  "triple_extraction": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "subject": { 
+          "type": "string",
+          "description": "核心实体，如测点KKS码、设备、主系统、电厂机组等"
+        },
+        "relation": { 
+          "type": "string",
+          "description": "主体与客体的关联描述，如对应KKS码、监测设备类型、位于等"
+        },
+        "object": { 
+          "type": "string",
+          "description": "关联的实体、属性或值，包含文本中明确标注的null值（以字符串\"null\"存储）"
+        }
+      },
+      "required": ["subject", "relation", "object"],
+      "additionalProperties": false
+    }
+  }
+}

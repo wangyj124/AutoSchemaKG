@@ -1,0 +1,149 @@
+:START_ID,:END_ID,relation,concepts,synsets,numeric_id,:TYPE
+Operation: Dulce,Paranormal Military Squad,is a mission of,"['execute', 'accomplish', 'carry out', 'serve as', 'fulfill']",[],0,Relation
+Agent Alex Mercer,Paranormal Military Squad,is an agent of,"['operate as', 'function as', 'represent', 'act as', 'serve as']",[],1,Relation
+Taylor Cruz,Paranormal Military Squad,is an agent of,"['operate as', 'function as', 'represent', 'act as', 'serve as']",[],2,Relation
+Jordan Hayes,Paranormal Military Squad,is an agent of,"['operate as', 'function as', 'represent', 'act as', 'serve as']",[],3,Relation
+Sam Rivera,Paranormal Military Squad,is an agent of,"['operate as', 'function as', 'represent', 'act as', 'serve as']",[],4,Relation
+Agent Alex Mercer,Operation: Dulce briefing,is present at,"['show up at', 'occur at', 'be there', 'appear at', 'exist at']",[],5,Relation
+Taylor Cruz,Agent Alex Mercer,speaks to,"['communicate with', 'converse with', 'address', 'interact with', 'talk to']",[],6,Relation
+Jordan Hayes,Agent Alex Mercer,nods supportively to,"['show approval', 'convey consent', 'signal endorsement', 'express agreement', 'acknowledge']",[],7,Relation
+Sam Rivera,last transmission logs,reviews,"['analyze', 'critique', 'examine', 'assess', 'evaluate']",[],8,Relation
+Taylor Cruz,counter-productive,states that speculation is,"['indicates', 'conveys', 'suggests', 'expresses', 'implies']",[],9,Relation
+Agent Alex Mercer,not having second thoughts,claims to be,"['state', 'profess to be', 'profess', 'declare', 'assert']",[],10,Relation
+Agent Alex Mercer,unfailingly determined on paper,is described as,"['represented as', 'portrayed as', 'depicted as', 'characterized as']",[],11,Relation
+Agent Alex Mercer,during briefing,has a strained smile,"['fake happiness', 'conceal distress', 'mask emotions', 'suppress feelings', 'force a smile']",[],12,Relation
+Agent Alex Mercer,projectors outlining Operation: Dulce,scans,"['review', 'analyze', 'observe', 'inspect', 'examine']",[],13,Relation
+Jordan Hayes,Agent Alex Mercer,narrowed eyes at,"['watch with suspicion', 'eye suspiciously', 'scrutinize closely', 'glance sharply', 'stare intently']",[],14,Relation
+Jordan Hayes,Agent Alex Mercer,offers a supportive nod to,"['approve', 'favor', 'support', 'endorse', 'acknowledge']",[],15,Relation
+Sam Rivera,last transmission logs,combs through,"['search thoroughly', 'scan carefully', 'examine closely', 'review in detail', 'sift through']",[],16,Relation
+Agent Alex Mercer,Agent Taylor Cruz,affirms agreement with,"['approve', 'support', 'agree to', 'endorse', 'concur with']",[],17,Relation
+Agent Alex Mercer,paramount,states that protocol is,"['define', 'establish', 'outline', 'specify', 'determine']",[],18,Relation
+Jordan Hayes,the struggle between personal convictions and mission,notices,"['observe', 'perceive', 'recognize', 'acknowledge', 'detect']",[],19,Relation
+Agent Alex Mercer,during briefing,develops quiet resolve,"['cultivate calm determination', 'gain inner peace', 'grow resilience', 'foster quiet strength', 'build inner strength']",[],20,Relation
+Agent Alex Mercer,that will not surrender easily,has a subtle form of determination,"['shape indirectly', 'influence subtly', 'guide subtly', 'determine faintly', 'affect gently']",[],21,Relation
+Sam Rivera,a cramped office,sat alone in,"['sit isolated in', 'exist apart in', 'dwell alone in', 'remain solitary in']",[],22,Relation
+Sam Rivera,the glow of multiple screens,was surrounded by,"['be bordered by', 'be enclosed by', 'be encompassed by', 'encircle']",[],23,Relation
+Sam Rivera,intercepted comm signals from Dulce,was monitoring,"['supervise', 'track', 'observe', 'watch', 'oversee']",[],24,Relation
+Sam Rivera,decrypting data,was engaged in,"['involve oneself in', 'dedicate to', 'immerse in', 'work on', 'focus on']",[],25,Relation
+Sam Rivera,thin air,whispered to,"['share quietly with', 'speak softly to', 'murmur to', 'convey secretly to', 'hint at to']",[],26,Relation
+Sam Rivera,What secrets are you hiding from us?,asked,"['request', 'call for', 'question', 'seek', 'inquire']",[],27,Relation
+Alex Mercer,Sam Rivera's workspace,arrived at,"['get to', 'arrive at destination', 'reach', 'arrive', 'come to']",[],28,Relation
+Alex Mercer,his brow,had a slight furrow in,"['form a line', 'show a trace', 'develop a wrinkle', 'create a groove']",[],29,Relation
+Alex Mercer,"Got a minute, Rivera?",asked,"['request', 'call for', 'question', 'seek', 'inquire']",[],30,Relation
+Sam Rivera,Always,responded with,"['counter with', 'react to', 'answer with', 'reply to', 'respond to']",[],31,Relation
+Sam Rivera,Alex has that look — like something's not sitting right with him,noted inwardly,"['perceive silently', 'recognize internally', 'sense privately', 'acknowledge inwardly']",[],32,Relation
+Alex Mercer,"Our tech is top-tier, but the silence from Dulce... It's not just technology that will see us through, it's intuition and... trust.",said,"['express', 'state', 'utter', 'communicate', 'declare']",[],33,Relation
+Alex Mercer,the digital haze,gave a gaze that pierced through,"['gaze with power', 'penetrate with eyes', 'fix with intensity', 'look intensely', 'stare deeply']",[],34,Relation
+Sam Rivera,Intuition,mirrored,"['reflect', 'resemble', 'copy', 'imitate', 'duplicate']",[],35,Relation
+Sam Rivera,I guess sometimes the numbers don't have all the answers.,said,"['express', 'state', 'utter', 'communicate', 'declare']",[],36,Relation
+Sam Rivera,for a moment,regarded Alex,"['think of alex', 'consider alex', 'view alex', 'perceive alex']",[],37,Relation
+Sam Rivera,but as windows into the vast and enigmatic challenge,saw the screens not as barriers,"['regard as permeable', 'consider as seamless', 'interpret as unified', 'view as connected', 'perceive as open']",[],38,Relation
+Alex Mercer,a concealed elevator,stood in,"['take stance', 'position oneself', 'stand in', 'assume place', 'occupy position']",[],39,Relation
+Alex Mercer,the concealed elevator,was gazing at,"['look at', 'observe', 'fix eyes on', 'stare at', 'gaze upon']",[],40,Relation
+Alex Mercer,the weight of impending confrontation,felt,"['perceive', 'sense', 'detect', 'experience', 'notice']",[],41,Relation
+Jordan Hayes,Alex Mercer,approached,"['draw near', 'move toward', 'get closer to', 'advance toward', 'come close to']",[],42,Relation
+Jordan Hayes,"This feels like more than a rescue or reconnaissance mission, doesn't it?",said,"['express', 'state', 'utter', 'communicate', 'declare']",[],43,Relation
+Alex Mercer,"It's like we're being pulled into someone else’s game. Not just observers or participants, but... pawns.",said,"['express', 'state', 'utter', 'communicate', 'declare']",[],44,Relation
+Jordan Hayes,a layer they were not seeing,felt,"['perceive', 'sense', 'detect', 'experience', 'notice']",[],45,Relation
+Jordan Hayes,We have no choice but to play along.,said,"['express', 'state', 'utter', 'communicate', 'declare']",[],46,Relation
+Taylor Cruz,You two need to cut the philosophical chatter. We have positions to secure.,interjected,"['interpose', 'interject', 'interrupt', 'insert', 'interleave']",[],47,Relation
+Taylor Cruz,Proceed,ordered,"['instruct', 'assign', 'request', 'command', 'direct']",[],48,Relation
+Sam Rivera,Hope everyone’s brought their good luck charms. Something tells me we’re going to need all the help we can get.,said,"['express', 'state', 'utter', 'communicate', 'declare']",[],49,Relation
+Sam Rivera,to lighten the mood,laughed,"['smile', 'burst into laughter', 'giggle', 'chuckle', 'laugh out loud']",[],50,Relation
+The team,the elevator,stepped into,"['enter', 'transition into', 'arrive at', 'move into', 'proceed into']",[],51,Relation
+The elevator,a silent hiss,closed with,"['end with', 'conclude with', 'terminate with', 'finish with']",[],52,Relation
+The team,the darkness,descended into,"['sink into', 'plunge into', 'fall into', 'drop into', 'descend']",[],53,Relation
+Dr. Jordan Hayes,the layers of data that could wait below,mused over,"['reflect on', 'consider', 'ponder', 'contemplate', 'think deeply about']",[],54,Relation
+Dr. Jordan Hayes,that their reluctance to accept other possibilities may have been their biggest blind spot,contemplated,"['meditate on', 'think about', 'reflect on', 'consider', 'ponder']",[],55,Relation
+Alex Mercer,"Once we're down there, keep that analytical edge sharp. You see through the mazes of the unexplained better than anyone.",leaned in and said,"['whisper', 'express intimacy', 'convey closeness', 'lean forward', 'speak softly']",[],56,Relation
+Dr. Jordan Hayes,"Thank you, Alex. You can count on me.",responded with,"['counter with', 'react to', 'answer with', 'reply to', 'respond to']",[],57,Relation
+The elevator,with a vibration that seemed to emanate from the very walls of the shaft,shuddered,"['vibrate', 'quiver', 'shake', 'tremble', 'quake']",[],58,Relation
+Taylor Cruz,Systems check. Now,barked out,"['utter forcefully', 'shout loudly', 'speak abruptly', 'bark sharply']",[],59,Relation
+Every agent,and sent confirmation signals through their comms,checked their gear,"['verify supplies', 'inspect equipment', 'prepare gear', 'examine tools', 'check belongings']",[],60,Relation
+Sam Rivera,"I'd laugh if we run into Martians playing poker down there—just to lighten the mood, you know?",said,"['express', 'state', 'utter', 'communicate', 'declare']",[],61,Relation
+The team,the elevator,stepped off,"['step away from', 'leave', 'depart', 'disembark', 'exit']",[],62,Relation
+The team,Dulce's mysterious halls,stood at the threshold of,"['hover near the entrance of', 'face the beginning of', 'be on the verge of', 'stand at the edge of', 'approach the boundary of']",[],63,Relation
+The team,the unknown,fanned out into,"['branch out', 'radiate from', 'disperse', 'spread out', 'extend outward']",[],64,Relation
+The weight of the metal door,the team,closed behind,"['isolate', 'seal off', 'shut', 'block', 'enclose']",[],65,Relation
+Dulce base,the wind-blown deserts above,was a name whispered in,"['be alluded to in', 'be spoken of in', 'be referenced in', 'be mentioned in']",[],66,Relation
+Dulce base,the shadowed corners of conspiracy forums,was a name whispered in,"['be alluded to in', 'be spoken of in', 'be referenced in', 'be mentioned in']",[],67,Relation
+Dulce base,that they could touch,was now a tangible cold reality,"['become real', 'concretize', 'materialize', 'manifest', 'take shape']",[],68,Relation
+Dulce base,them back with a chill,touched,"['brush against', 'reach out to', 'make contact with', 'graze', 'come into contact with']",[],69,Relation
+"Agents Alex Mercer, Jordan Hayes, Taylor Cruz, and Sam Rivera",lambs led to an altar of alien deities,proceeded like,"['resemble', 'follow', 'mirror', 'proceed as', 'emulate']",[],70,Relation
+Taylor Cruz,through the base,set a brisk pace,"['quicken pace', 'establish speed', 'move quickly', 'drive forward', 'accelerate']",[],71,Relation
+Taylor Cruz,"Eyes sharp, people. Comms check, every thirty seconds",ordered,"['instruct', 'assign', 'request', 'command', 'direct']",[],72,Relation
+Sam Rivera,a handheld device aimed at detecting electronic anomalies,fiddled with,"['tinker with', 'play with', 'manipulate', 'experiment with', 'handle casually']",[],73,Relation
+Jordan Hayes,an innocuous looking panel,paused at,"['halt at', 'stop at', 'come to a standstill at', 'suspend at']",[],74,Relation
+Jordan Hayes,Alex Mercer and Sam Rivera to come see this,called for,"['urge', 'request', 'propose', 'demand', 'advocate']",[],75,Relation
+Jordan Hayes,This panel is a recent addition — covering something they didn't want found,explained,"['make clear', 'reveal', 'clarify', 'disclose', 'interpret']",[],76,Relation
+Sam Rivera,the panel,understood the significance of what lay beneath,"['recognize underlying meaning', 'discern core importance', 'comprehend hidden truth', 'perceive depth', 'grasp essence']",[],77,Relation
+A drone,the group,approached,"['draw near', 'move toward', 'get closer to', 'advance toward', 'come close to']",[],78,Relation
+Sam Rivera,by using their gadgetry to ward off the threat,reacted first,"['initiate response', 'lead reaction', 'respond promptly', 'take early action', 'act quickly']",[],79,Relation
+Agent Alex Mercer,Paranormal Military Squad,is a member of,"['belong to', 'associate with', 'be part of', 'belong in', 'be affiliated with']",[],80,Relation
+Operation: Dulce,Paranormal Military Squad,is the mission of,"['realize', 'serve', 'accomplish', 'achieve', 'fulfill']",[],81,Relation
+Dr. Jordan Hayes,Operation: Dulce,is involved in,"['participate in', 'contribute to', 'play a role in', 'take part in', 'engage in']",[],82,Relation
+Dr. Jordan Hayes,alien technology retrieved from the crash site,is studying,"['conduct research', 'pursue education', 'acquire knowledge', 'focus on subject', 'learn']",[],83,Relation
+alien technology retrieved from the crash site,Dr. Jordan Hayes,is being analyzed by,"['undergo analysis by', 'be studied by', 'be subject to analysis', 'be examined by']",[],84,Relation
+Agent Alex Mercer,Dr. Jordan Hayes,observes,"['perceive', 'watch', 'monitor', 'detect', 'notice']",[],85,Relation
+Agent Alex Mercer,what Operation: Dulce means for humanity,is concerned about,"['be attentive to', 'be interested in', 'care about', 'worry over', 'be mindful of']",[],86,Relation
+Dr. Jordan Hayes,the alien technology,believes that physics could be fundamentally changed by,"['considers possible', 'trusts', 'holds belief in', 'envisions transformation by', 'anticipates change through']",[],87,Relation
+Dr. Jordan Hayes,the quest for understanding,is driven by,"['stimulated by', 'motivated by', 'powered by', 'caused by', 'initiated by']",[],88,Relation
+Taylor Cruz,Operation: Dulce,is in charge of,"['supervise', 'manage', 'oversee', 'direct', 'lead']",[],89,Relation
+Taylor Cruz,Dr. Jordan Hayes and Agent Alex Mercer to focus on the task,tells,"['convey information', 'express', 'communicate', 'share knowledge', 'narrate']",[],90,Relation
+Taylor Cruz,for Operation: Dulce,has a vision of control and order,"['pursue organization', 'envision governance', 'seek stability', 'desire structure', 'aim for harmony']",[],91,Relation
+Taylor Cruz,the alien technology,shows reverence for,"['venerate', 'respect', 'admire', 'esteem', 'honor']",[],92,Relation
+Taylor Cruz,humans,acknowledges that the alien technology could change the game for,"['recognize potential', 'concede influence', 'admit possibility', 'accept transformation']",[],93,Relation
+Sam Rivera,Paranormal Military Squad,is a member of,"['belong to', 'associate with', 'be part of', 'belong in', 'be affiliated with']",[],94,Relation
+Sam Rivera,technology,is skilled in,"['demonstrate proficiency in', 'possess expertise in', 'excel in', 'master']",[],95,Relation
+Sam Rivera,Operation: Dulce data,identifies signal inconsistencies in,"['recognize anomalies in', 'find inconsistencies in', 'detect discrepancies in', 'uncover irregularities in']",[],96,Relation
+Sam Rivera,not random,believes that signal inconsistencies are a structured anomaly,"['consider', 'trust', 'perceive', 'regard', 'view']",[],97,Relation
+Agent Alex Mercer,Sam Rivera's technical insight,respects,"['value', 'admire', 'acknowledge dignity', 'regard with esteem', 'honor']",[],98,Relation
+Agent Alex Mercer,for Operation: Dulce,views Sam Rivera as a guiding intellect in uncertainty,"['view as a source of direction', 'regard as wise', 'consider as a guide', 'see as a mentor']",[],99,Relation
+Taylor Cruz,it is time to gear up for Operation: Dulce,announces that,"['reveal', 'state', 'communicate', 'inform', 'declare']",[],100,Relation
+Taylor Cruz,in Operation: Dulce,believes that Dulce waits for no one,"['trusts', 'accepts as true', 'considers certain', 'holds belief']",[],101,Relation
+Agent Alex Mercer,Sam Rivera,has a distant but developing mutual understanding with,"['build distant rapport', 'develop mutual awareness', 'nurture indirect understanding', 'foster gradual connection', 'establish evolving comprehension']",[],102,Relation
+Taylor Cruz,anticipation for Operation: Dulce,has a mask of duty concealing,"['mask commitment', 'conceal obligation', 'obscure duty', 'hide responsibility', 'disguise duty']",[],103,Relation
+Paranormal Military Squad,Operation: Dulce,is converging on,"['draw near', 'move toward', 'approach', 'head toward', 'tend toward']",[],104,Relation
+Operation: Dulce,the motives and strength of each member,is a nexus point that challenges,"['act as a catalyst for', 'create tension at', 'serve as a focal challenge', 'emerge as a central conflict point', 'provoke confrontation at']",[],105,Relation
+Agent Alex Mercer,the volatile embrace of Operation: Dulce,is stepping closer to,"['draw near', 'move toward', 'get closer to', 'advance toward', 'approach']",[],106,Relation
+Dr. Jordan Hayes,the alien technology,is focused on,"['concentrate on', 'center on', 'prioritize', 'revolve around', 'aim at']",[],107,Relation
+Sam Rivera,signal inconsistencies,is analyzing,"['study', 'investigate', 'scrutinize', 'examine', 'assess']",[],108,Relation
+the briefing room,the initial meeting for Operation: Dulce,is the location of,"['located within', 'positioned at', 'resides in', 'found in', 'situated at']",[],109,Relation
+the sterile briefing room,for Operation: Dulce,is where the Paranormal Military Squad convenes,"['assemble at', 'meet at', 'gather at', 'reside at', 'operate from']",[],110,Relation
+the thrumming of monitors,the rigid silence of the briefing room,contrasts with,"['vary from', 'oppose', 'contrast against', 'differ from', 'stand in opposition to']",[],111,Relation
+the cooling vents,in the briefing room,hum in a monotonous drone,"['hum steadily', 'emit a low sound', 'vibrate continuously', 'resonate steadily', 'drone on']",[],112,Relation
+the comms system,in the briefing room,comes to life with a crackle,"['ignite', 'burst into flame', 'kindle', 'flare up', 'spark']",[],113,Relation
+the alien technology,Dr. Jordan Hayes realigns a translucent component,emits a low pulse when,"['emit frequency', 'trigger response', 'generate signal', 'send out wave', 'produce pulse']",[],114,Relation
+Agent Alex Mercer,for Operation: Dulce,is determined on paper,"['be stated on', 'be documented on', 'be written on', 'be recorded on']",[],115,Relation
+Dr. Jordan Hayes,during analysis of alien technology,is composed and focused,"['concentrate', 'center', 'unify', 'structure', 'form']",[],116,Relation
+Taylor Cruz,during the briefing,has a brusque tone,"['brusqueness', 'curt expression', 'abrupt manner', 'directness', 'harsh speech']",[],117,Relation
+Agent Alex Mercer,Dr. Jordan Hayes,is in a state of silent solidarity with,"['remain in unspoken agreement', 'stand with', 'unite in silence', 'share quiet allegiance', 'support silently']",[],118,Relation
+Dr. Jordan Hayes,while analyzing the device,has a faint furrow of concentration,"['reveal concentration', 'show focus', 'display thought', 'exhibit contemplation']",[],119,Relation
+the briefing room,in Operation: Dulce,is a liminal space between facts and hidden truths,"['hidden boundary', 'in-between', 'exist between', 'threshold', 'transitional', 'concealed interface', 'bridge', 'ambiguity', 'uncertainty']",[],120,Relation
+the group,in Operation: Dulce,is pulled together by the enticement of the unknown,"['attracted to the unknown', 'lured by uncertainty', 'enticed by the unseen', 'pulled by curiosity', 'drawn by mystery']",[],121,Relation
+the group,a shared pulse of anticipation,is coalescing their distinct desires into,"['integrate', 'synthesize', 'combine', 'unify', 'merge']",[],122,Relation
+the mission,for the members of Paranormal Military Squad,is a convergence of different paths and reasons,"['unite', 'come together', 'converge', 'intersect', 'merge']",[],123,Relation
+the mission,in Operation: Dulce,is a challenge to each member's motives and strength,"['demand', 'strain', 'test', 'push', 'confront']",[],124,Relation
+the briefing room,between Agent Alex Mercer and Taylor Cruz,is where the competitive undercurrent exists,"['surface in', 'presence of', 'exist in', 'arise in', 'manifest in']",[],125,Relation
+the briefing room,between Agent Alex Mercer and Dr. Jordan Hayes,is where the unspoken rebellion against control and order occurs,"['resist authority', 'subvert hierarchy', 'challenge structure', 'oppose regulation', 'defy norms']",[],126,Relation
+the briefing room,between Dr. Jordan Hayes and Taylor Cruz,is where an uneasy truce forms,"['exist between', 'persist despite conflict', 'coexist under tension', 'endure in rivalry', 'remain in fragile balance']",[],127,Relation
+the briefing room,among the members,is where the shared pulse of anticipation grows,"['thrive', 'resonate', 'flourish', 'gather', 'pulse']",[],128,Relation
+the briefing room,through understanding of alien artifacts,is where the future of the species is being pieced together,"['determine evolution', 'influence progression', 'hold potential', 'guide development', 'shape destiny']",[],129,Relation
+the briefing room,by lights and machinery,is where the characters are marshaled back to the moment,"['converge at point', 'gather at origin', 'return to moment', 'reunite at instant', 'reassemble at time']",[],130,Relation
+Operation: Dulce,Paranormal Military Squad,is a mission of,"['execute', 'accomplish', 'carry out', 'serve as', 'fulfill']",[],131,Relation
+Agent Alex Mercer,Paranormal Military Squad,is an agent of,"['operate as', 'function as', 'represent', 'act as', 'serve as']",[],132,Relation
+Taylor Cruz,Paranormal Military Squad,is an agent of,"['operate as', 'function as', 'represent', 'act as', 'serve as']",[],133,Relation
+Jordan Hayes,Paranormal Military Squad,is an agent of,"['operate as', 'function as', 'represent', 'act as', 'serve as']",[],134,Relation
+Sam Rivera,Paranormal Military Squad,is an agent of,"['operate as', 'function as', 'represent', 'act as', 'serve as']",[],135,Relation
+Agent Alex Mercer,Operation: Dulce,is attending briefing for,"['participate in session', 'be present at', 'be involved in event', 'attend meeting', 'engage in discussion']",[],136,Relation
+Taylor Cruz,second thoughts,addresses Agent Alex Mercer about,"['communicate with', 'discuss with', 'mention', 'speak to', 'refer to']",[],137,Relation
+Jordan Hayes,Agent Alex Mercer,offers supportive nod to,"['favor', 'support', 'endorse', 'approve of', 'back']",[],138,Relation
+Sam Rivera,last transmission logs,has combed through,"['analyze', 'scrutinize', 'investigate', 'examine thoroughly', 'review carefully']",[],139,Relation
+Taylor Cruz,counter-productive,declares speculation to be,"['asserts as', 'labels as', 'presents as', 'defines as', 'characterizes as']",[],140,Relation
+Agent Alex Mercer,Agent Taylor Cruz,affirms agreement with,"['approve', 'support', 'agree to', 'endorse', 'concur with']",[],141,Relation
+Agent Alex Mercer,Operation: Dulce,has a subtle resolve despite compliance,"['subtle defiance', 'comply outwardly', 'quiet opposition', 'resist internally', 'maintain inner resolve']",[],142,Relation
+Jordan Hayes,Agent Alex Mercer,notices unspoken complexity in,"['sense subtle nuances', 'detect underlying patterns', 'perceive hidden layers', 'recognize intricate details']",[],143,Relation
+Agent Alex Mercer,briefing for Operation: Dulce,has dulled eyes during,"['lose focus', 'appear weary', 'show fatigue', 'exhibit tiredness', 'seem dull']",[],144,Relation
+Paranormal Military Squad,sterile briefing room,convenes in,"['assemble at', 'meet at', 'occur at', 'gather at', 'hold at']",[],145,Relation
+Operation: Dulce,Agent Alex Mercer,is an impending odyssey for,"['undergo', 'face', 'encounter', 'experience', 'confront']",[],146,Relation
+Agent Alex Mercer,to participate in Operation: Dulce,is determined on paper,"['be stated on', 'be documented on', 'be written on', 'be recorded on']",[],147,Relation

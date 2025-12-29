@@ -1,0 +1,410 @@
+name:ID,type,concepts,synsets,numeric_id,:LABEL
+上海电气燃气轮机有限公司,entity,[],[],0,Node
+燃机RDS模块安装调试手册,entity,[],[],1,Node
+DG50011918,entity,[],[],2,Node
+RDS模块,entity,[],[],3,Node
+瑞荟流体技术有限公司,entity,[],[],4,Node
+MBA51AP001-KP01 + MBA51AP001-M01-E01,entity,[],[],5,Node
+MBA51AP002-KP01 + MBA51AP002-M02-E01,entity,[],[],6,Node
+MBA51BB001,entity,[],[],7,Node
+MBA51BB002,entity,[],[],8,Node
+MBA53AA191,entity,[],[],9,Node
+MBA51AA193,entity,[],[],10,Node
+MBA51AA194,entity,[],[],11,Node
+MBA53AA002-Y01-S11,entity,[],[],12,Node
+MBA53AA003-Y01-S11,entity,[],[],13,Node
+MBA53AA006-Y01-S11,entity,[],[],14,Node
+MBA53AA001-Y01-S21,entity,[],[],15,Node
+MBA53AA005-Y01-S21,entity,[],[],16,Node
+MBA54AA281,entity,[],[],17,Node
+MBA54AA282,entity,[],[],18,Node
+MBA53AA281,entity,[],[],19,Node
+MBA53AA282,entity,[],[],20,Node
+ISO VG46,entity,[],[],21,Node
+填充蓄能器,entity,[],[],22,Node
+固定水平面,entity,[],[],23,Node
+底座安装孔,entity,[],[],24,Node
+至少1米,entity,[],[],25,Node
+环境温度0°C至40°C,entity,[],[],26,Node
+6个月,entity,[],[],27,Node
+未通电,entity,[],[],28,Node
+已断开与管路连接,entity,[],[],29,Node
+所有部件处于安全状态,entity,[],[],30,Node
+60°,entity,[],[],31,Node
+安全检查员指挥,entity,[],[],32,Node
+所有液压连接,entity,[],[],33,Node
+所有电气连接,entity,[],[],34,Node
+接口HE的给压,entity,[],[],35,Node
+物位开关连线,entity,[],[],36,Node
+温度监控装置连线,entity,[],[],37,Node
+系统冲洗,entity,[],[],38,Node
+氮气填充蓄能器,entity,[],[],39,Node
+运输文档签署之日起算,entity,[],[],40,Node
+24个月或36个月,entity,[],[],41,Node
+未遵守SGC手册要求,entity,[],[],42,Node
+擅自改造模块,entity,[],[],43,Node
+操作不当造成损坏,entity,[],[],44,Node
+存在爆炸风险的环境,entity,[],[],45,Node
+存在有毒性气体的环境,entity,[],[],46,Node
+粉尘浓度较高的环境,entity,[],[],47,Node
+存在油气挥发物质的环境,entity,[],[],48,Node
+高火灾风险的环境,entity,[],[],49,Node
+安装条件不符合3.3.2要求,entity,[],[],50,Node
+工作介质含半液态或固态材质,entity,[],[],51,Node
+未正确连接管道至用户机组,entity,[],[],52,Node
+具备专业资质人员完成,entity,[],[],53,Node
+模块未通电,entity,[],[],54,Node
+蓄能器已泄压,entity,[],[],55,Node
+运行介质温度低于30℃,entity,[],[],56,Node
+在运输到安装地点之前，应检查可用空间。,event,[],[],57,Node
+只有在确保运输路线和安装地点为 RDS 提供了足够空间的情况下，才能将其运输到安装地点。,event,[],[],58,Node
+模块必须安装在固定的水平面上。,event,[],[],59,Node
+绝不能安装在可移动平面上，也不能安装在竖直平面或者倾斜平面上。,event,[],[],60,Node
+在起吊操作前，须确认操作区域内无人员。,event,[],[],61,Node
+起吊操作必须听从负责起吊安全的安全检查员的统一指挥。,event,[],[],62,Node
+在割开绷紧带前，应戴好防护手套。,event,[],[],63,Node
+防止绷紧带末端松开晃动，避免伤及人体。,event,[],[],64,Node
+在设置液压连接线路前，必须确保管道已冲洗完毕。,event,[],[],65,Node
+在连接到 RDS 之前，要连接的管道应该已经冲洗完毕。,event,[],[],66,Node
+在进行所有维护或维修工作之前，必须释放流体侧的压力。,event,[],[],67,Node
+否则可能导致爆炸或液压流体喷溅，造成严重事故。,event,[],[],68,Node
+在打开管路或拆卸阀门时如果有油体流出，表示有剩余压力。,event,[],[],69,Node
+因此必须非常缓慢地打开管路和阀门，逐渐释放压力。,event,[],[],70,Node
+在填充或置换运行介质期间禁止吸烟和明火。,event,[],[],71,Node
+以防止火灾或爆炸风险。,event,[],[],72,Node
+在模块运行期间禁止进行维修操作。,event,[],[],73,Node
+否则可能导致机械伤害、电击或烫伤等安全事故。,event,[],[],74,Node
+在调试前必须检查所有液压连接。,event,[],[],75,Node
+否则可能导致系统故障或设备损坏。,event,[],[],76,Node
+在对 RDS 进行排气操作之前，必须完成检查。,event,[],[],77,Node
+以确保系统安全，防止压力异常造成危险。,event,[],[],78,Node
+在使用氮气填充蓄能器前，必须确认蓄能器已泄压。,event,[],[],79,Node
+否则可能导致爆炸或喷射事故。,event,[],[],80,Node
+在进行调整或维修工作时必须使用合适的工具和设备。,event,[],[],81,Node
+以避免意外启动或操作不当引发安全事故。,event,[],[],82,Node
+在完成安装后，必须准备调试。,event,[],[],83,Node
+调试前需完成检查清单并确认所有连接正常。,event,[],[],84,Node
+在完成冲洗系统后，才能进行下一步调试。,event,[],[],85,Node
+否则系统可能因污染而损坏。,event,[],[],86,Node
+在确认模块未通电且蓄能器已泄压后，方可进行维护工作。,event,[],[],87,Node
+以确保操作人员安全，防止电击或高压喷射伤害。,event,[],[],88,Node
+在拆包后，必须立即检查模块外观和连接接口。,event,[],[],89,Node
+以确认设备在运输过程中未受损。,event,[],[],90,Node
+在起吊模块前，必须确认模块重心在支架范围内。,event,[],[],91,Node
+以保证起吊过程稳定，防止倾覆或坠落。,event,[],[],92,Node
+在连接电气线路前，必须确认电源已断开。,event,[],[],93,Node
+以防止电击事故。,event,[],[],94,Node
+在完成所有检查后，才能启动系统进行调试。,event,[],[],95,Node
+以确保系统处于安全状态，避免运行故障。,event,[],[],96,Node
+上海电气燃气轮机有限公司拥有燃机RDS模块安装调试手册的产权。,event,[],[],97,Node
+未经上海电气燃气轮机有限公司书面同意，不得擅自复制、转让、披露或提供燃机RDS模块安装调试手册。,event,[],[],98,Node
+燃机RDS模块安装调试手册的文档编号为DG50011918。,event,[],[],99,Node
+燃机RDS模块安装调试手册的版本为00。,event,[],[],100,Node
+00,entity,[],[],101,Node
+燃机RDS模块安装调试手册的保密等级为2。,event,[],[],102,Node
+2,entity,[],[],103,Node
+燃机RDS模块安装调试手册的页码范围为1至26。,event,[],[],104,Node
+1,entity,[],[],105,Node
+26,entity,[],[],106,Node
+燃机RDS模块安装调试手册的标题为燃机RDS模块安装调试手册。,event,[],[],107,Node
+燃机RDS模块安装调试手册的文件类型为系统代码J11。,event,[],[],108,Node
+J11,entity,[],[],109,Node
+燃机RDS模块安装调试手册的产品/结构为AE94.3A/AE94.2。,event,[],[],110,Node
+AE94.3A/AE94.2,entity,[],[],111,Node
+燃机RDS模块安装调试手册的编写部门为产品部。,event,[],[],112,Node
+产品部,entity,[],[],113,Node
+燃机RDS模块安装调试手册的语言为中文。,event,[],[],114,Node
+中文,entity,[],[],115,Node
+燃机RDS模块安装调试手册的编制人员为周蕾、张洁、刘海博、孙博。,event,[],[],116,Node
+周蕾,entity,[],[],117,Node
+张洁,entity,[],[],118,Node
+刘海博,entity,[],[],119,Node
+孙博,entity,[],[],120,Node
+燃机RDS模块安装调试手册的批准日期为2023年5月。,event,[],[],121,Node
+2023.05,entity,[],[],122,Node
+燃机RDS模块安装调试手册的版本修改描述为初版[默认]。,event,[],[],123,Node
+初版[默认],entity,[],[],124,Node
+燃机RDS模块的质保期为业主验收模块开始24个月或模块最终测试后36个月。,event,[],[],125,Node
+燃机RDS模块,entity,[],[],126,Node
+24个月,entity,[],[],127,Node
+36个月,entity,[],[],128,Node
+若用户未严格遵守SGC手册要求，因操作不当造成模块损坏，质保失效。,event,[],[],129,Node
+用户,entity,[],[],130,Node
+SGC手册,entity,[],[],131,Node
+若用户未经SGC同意擅自对模块进行改造，质保失效。,event,[],[],132,Node
+SGC,entity,[],[],133,Node
+所有非由模块部件缺陷引起的运行失效和/或损坏均不在质保范围内。,event,[],[],134,Node
+部件缺陷,entity,[],[],135,Node
+使用警告符号提醒注意与人员安全相关的问题。,event,[],[],136,Node
+警告符号,entity,[],[],137,Node
+人员安全,entity,[],[],138,Node
+与设备损坏相关的说明不带三角形警告标志。,event,[],[],139,Node
+设备损坏,entity,[],[],140,Node
+三角形警告标志,entity,[],[],141,Node
+警告信息按危险程度由高到低排列，表示可能导致死亡或严重人体伤害。,event,[],[],142,Node
+警告信息,entity,[],[],143,Node
+死亡,entity,[],[],144,Node
+严重人体伤害,entity,[],[],145,Node
+警告信息表示可能导致轻度人体伤害。,event,[],[],146,Node
+轻度人体伤害,entity,[],[],147,Node
+无三角形警告标志的信息表示可能导致设备损坏。,event,[],[],148,Node
+无三角形警告标志,entity,[],[],149,Node
+蓄能器系统在开路状态下放电可能导致爆炸。,event,[],[],150,Node
+蓄能器系统,entity,[],[],151,Node
+开路状态,entity,[],[],152,Node
+爆炸,entity,[],[],153,Node
+蓄能器系统放电可能导致飞溅部件和液压流体喷溅，造成死亡或致残性严重事故。,event,[],[],154,Node
+飞溅部件,entity,[],[],155,Node
+液压流体喷溅,entity,[],[],156,Node
+致残性严重事故,entity,[],[],157,Node
+在进行维护或维修工作前，必须释放流体侧的压力。,event,[],[],158,Node
+维护工作,entity,[],[],159,Node
+维修工作,entity,[],[],160,Node
+流体侧压力,entity,[],[],161,Node
+压力传感器MBA51CP101、MBA51CP102和MBA51CP103监控蓄能器压力。,event,[],[],162,Node
+压力传感器MBA51CP101,entity,[],[],163,Node
+压力传感器MBA51CP102,entity,[],[],164,Node
+压力传感器MBA51CP103,entity,[],[],165,Node
+蓄能器压力,entity,[],[],166,Node
+液压流体喷溅会产生危险，可能导致伤害或火灾。,event,[],[],167,Node
+伤害,entity,[],[],168,Node
+火灾,entity,[],[],169,Node
+在存在剩余压力的情况下，传感器零区和压力计不精确会导致无法读取压力。,event,[],[],170,Node
+剩余压力,entity,[],[],171,Node
+传感器零区,entity,[],[],172,Node
+压力计,entity,[],[],173,Node
+打开管路或拆卸阀门时如有油体流出，表示存在剩余压力。,event,[],[],174,Node
+管路,entity,[],[],175,Node
+阀门,entity,[],[],176,Node
+油体流出,entity,[],[],177,Node
+必须非常缓慢地打开管路和阀门，逐渐释放压力。,event,[],[],178,Node
+压力,entity,[],[],179,Node
+只有当没有液压流体溢出且无剩余压力时，才能完全打开管路或拆下阀门。,event,[],[],180,Node
+液压流体溢出,entity,[],[],181,Node
+溢出的液压流体会导致滑倒危险。,event,[],[],182,Node
+滑倒危险,entity,[],[],183,Node
+液压流体溢出必须立即按照安全数据单要求进行吸附处理并清除。,event,[],[],184,Node
+安全数据单,entity,[],[],185,Node
+吸附处理,entity,[],[],186,Node
+处理液压流体前必须阅读并遵守相关安全数据单的要求。,event,[],[],187,Node
+液压流体,entity,[],[],188,Node
+处理,entity,[],[],189,Node
+安全数据单中说明了流体接触皮肤、眼睛或嘴部的处理方法。,event,[],[],190,Node
+皮肤,entity,[],[],191,Node
+眼睛,entity,[],[],192,Node
+嘴部,entity,[],[],193,Node
+系统必须在完全正常功能下操作，发现异常必须立即关闭系统。,event,[],[],194,Node
+系统,entity,[],[],195,Node
+正常功能,entity,[],[],196,Node
+异常,entity,[],[],197,Node
+关闭系统后必须采取安全措施并立即解决故障。,event,[],[],198,Node
+安全措施,entity,[],[],199,Node
+故障,entity,[],[],200,Node
+应定期检查系统是否有损坏或故障。,event,[],[],201,Node
+损坏,entity,[],[],202,Node
+调试时必须遵守蓄能器系统安全须知。,event,[],[],203,Node
+调试,entity,[],[],204,Node
+RDS,entity,[],[],205,Node
+供给管道 HD / 637B,entity,[],[],206,Node
+供给管道 HE / 638B,entity,[],[],207,Node
+返回管道 HF / 639B,entity,[],[],208,Node
+操作管道 HS1 / 643A,entity,[],[],209,Node
+操作管道 HS2 / 642A,entity,[],[],210,Node
+操作管道 NS1 / 644A,entity,[],[],211,Node
+操作管道 NS2 / 645A,entity,[],[],212,Node
+氮气罐,entity,[],[],213,Node
+皮囊式蓄能器,entity,[],[],214,Node
+氮气填充器,entity,[],[],215,Node
+蓄能器三通阀 MBA51AA255,entity,[],[],216,Node
+蓄能器流体侧,entity,[],[],217,Node
+蓄能器三通阀 MBA51AA256,entity,[],[],218,Node
+蓄能器,entity,[],[],219,Node
+电机 MBA51AP01-M01-E01,entity,[],[],220,Node
+泵 MBA51AP001-KP01,entity,[],[],221,Node
+泵 MBA51AP002-KP01,entity,[],[],222,Node
+电磁阀 MBA53AA001,entity,[],[],223,Node
+主推力端管道 HS1 / 643A,entity,[],[],224,Node
+电磁阀 MBA53AA003,entity,[],[],225,Node
+主推力端管道 HS2 / 642A,entity,[],[],226,Node
+电磁阀 MBA53AA005,entity,[],[],227,Node
+辅助推力端管道 NS3 / 644A,entity,[],[],228,Node
+电磁阀 MBA53AA006,entity,[],[],229,Node
+辅助推力端管道 NS4 / 645A,entity,[],[],230,Node
+压力变送器 MBA51CP101,entity,[],[],231,Node
+压力变送器 MBA51CP102,entity,[],[],232,Node
+压力变送器 MBA51CP103,entity,[],[],233,Node
+压力表 MBA51CP501,entity,[],[],234,Node
+系统压力,entity,[],[],235,Node
+压力表 MBA51CP502,entity,[],[],236,Node
+泵出口压力,entity,[],[],237,Node
+压力表 MBA51CP503,entity,[],[],238,Node
+溢流阀 MBA51AA191,entity,[],[],239,Node
+180 bar,entity,[],[],240,Node
+溢流阀 MBA51AA192,entity,[],[],241,Node
+溢流阀 MBA51AA193,entity,[],[],242,Node
+210 bar,entity,[],[],243,Node
+溢流阀 MBA51AA194,entity,[],[],244,Node
+溢流阀 MBA53AA191,entity,[],[],245,Node
+溢流阀 MBA54AA191,entity,[],[],246,Node
+溢流阀 MBA54AA192,entity,[],[],247,Node
+节流阀 MBA53AA281,entity,[],[],248,Node
+4 L/min,entity,[],[],249,Node
+节流阀 MBA54AA281,entity,[],[],250,Node
+节流阀 MBA53AA282,entity,[],[],251,Node
+1 L/min,entity,[],[],252,Node
+节流阀 MBA54AA282,entity,[],[],253,Node
+泵入口管截止阀 MBA51AA251,entity,[],[],254,Node
+启动泵,entity,[],[],255,Node
+泵入口管截止阀 MBA51AA252,entity,[],[],256,Node
+排气操作,entity,[],[],257,Node
+电磁换向球阀 MBA53AA001,entity,[],[],258,Node
+电磁换向球阀 MBA53AA002,entity,[],[],259,Node
+电磁换向球阀 MBA53AA003,entity,[],[],260,Node
+电磁换向球阀 MBA53AA004,entity,[],[],261,Node
+电磁换向球阀 MBA53AA005,entity,[],[],262,Node
+电磁换向球阀 MBA53AA006,entity,[],[],263,Node
+仪表针阀 MBA51AA301,entity,[],[],264,Node
+压力变送器 MBA51CP001,entity,[],[],265,Node
+仪表针阀 MBA51AA302,entity,[],[],266,Node
+压力变送器 MBA51CP002,entity,[],[],267,Node
+仪表针阀 MBA51AA303,entity,[],[],268,Node
+仪表针阀 MBA51AA304,entity,[],[],269,Node
+仪表针阀 MBA51AA305,entity,[],[],270,Node
+制造商已经冲洗了 RDS，不需要再对 RDS 进行冲洗处理。,event,[],[],271,Node
+需要冲洗 RDS 上的供给和返回管道以及到轮机的操作管道。,event,[],[],272,Node
+针对每个管道的冲洗操作应以达到所需的纯度为标准。,event,[],[],273,Node
+管道的冲洗及清洁度非 SGC 负责。,event,[],[],274,Node
+如果因为污染而导致故障、停运和设备损坏，则不在 SGC 保修范围内。,event,[],[],275,Node
+只能使用纯度不低于 99.995%的氮气。,event,[],[],276,Node
+如果使用不当的气体填充，则有爆炸风险。,event,[],[],277,Node
+如果氮气罐中的氮气压力高于皮囊式蓄能器中允许的压力，则氮气填充器必须配备一个降压器。,event,[],[],278,Node
+如果压力过大，可能损坏设备。,event,[],[],279,Node
+使用电机上的风机风轮来检查泵的旋转方向。,event,[],[],280,Node
+如果电机的旋转方向不正确，会损坏泵。,event,[],[],281,Node
+在短时间内依次重新开关两个电机（缓动），以检查旋转方向是否符合箭头方向。,event,[],[],282,Node
+必须确保电机的旋转方向符合箭头所指方向。,event,[],[],283,Node
+在对系统进行排气操作之前，应检查如下设置：泵入口管的截止阀门打开。,event,[],[],284,Node
+如果在球阀闭合的情况下操作泵，即时时间很短，也会损坏泵。,event,[],[],285,Node
+使用测量设备上的截止固件对测量仪器管道进行排气操作。,event,[],[],286,Node
+排气直到液压流体没有气泡溢出为止。,event,[],[],287,Node
+电磁阀 MBA53AA001 和 MBA53AA003 通电。,event,[],[],288,Node
+在 SGC 选择的合适点对主推力端管道进行排气。,event,[],[],289,Node
+在 SGC 选择的合适点对辅助推力端管道进行排气。,event,[],[],290,Node
+在给 RDS 加压之前，应检查如下设置：泵入口管的截止阀门打开。,event,[],[],291,Node
+必须保证有所需的氮气压力。,event,[],[],292,Node
+检查了电机旋转方向。,event,[],[],293,Node
+使用氮气填充了蓄能器。,event,[],[],294,Node
+冲洗了整个系统。,event,[],[],295,Node
+启动电机 MBA51AP01-M01-E01。,event,[],[],296,Node
+填充蓄能器，给系统加压。,event,[],[],297,Node
+检查所有管道连接是否有泄漏。,event,[],[],298,Node
+如果有泄漏，必须马上修复。,event,[],[],299,Node
+爆发溢出的液压流体会产生危险。,event,[],[],300,Node
+释放系统压力的操作顺序：打开阀 MBA51AA255 和 MBA51AA256，将蓄能器压力释放到罐中。,event,[],[],301,Node
+在 RDS 上进行任何操作之前，都需要通过检查来确认系统的压力已经释放。,event,[],[],302,Node
+打开管道和阀门的时候，速度要特别慢，以便缓慢释放压力。,event,[],[],303,Node
+只有在没有液压流体溢出，并且没有残余压力的情况下，才能完全打开管道或拆卸阀门。,event,[],[],304,Node
+对于溢出的液压流体，必须按照液压流体安全数据单的规定立即进行吸附处理并将其除去。,event,[],[],305,Node
+依次启动泵 MBA51AP001-KP01 和 MBA51AP002-KP01，检测压力开关 MBA51CP001 和 MBA51CP002。,event,[],[],306,Node
+确定每个泵从 p1 到 p2 的填充时间。,event,[],[],307,Node
+进行调试的前提条件是顺利完成所有操作（8.2.1 到 8.2.7）。,event,[],[],308,Node
+可以启动两个泵中的一个从而启动 RDS 模块。,event,[],[],309,Node
+优先设定 MBA54AA191、MBA54AA192 的 210bar。,event,[],[],310,Node
+顺时针旋紧 MBA54AA192，并回退半圈。,event,[],[],311,Node
+缓慢将 MBA54AA192 顺时针旋紧，压力表每上升 10bar 需停顿 10S。,event,[],[],312,Node
+直至压力表读数为 210bar 为止。,event,[],[],313,Node
+顺时针锁紧 MBA54AA192 的锁紧螺母。至此 MBA54AA192 整定完毕。,event,[],[],314,Node
+启动 MBA51AP001 油泵，此时系统三个压力表读数应为 0bar。,event,[],[],315,Node
+顺时针旋紧 MBA51AA191 至紧，并回退半圈。,event,[],[],316,Node
+顺时针锁紧 MBA51AA191 的锁紧螺母，至此 MBA51AA191 整定完毕。,event,[],[],317,Node
+逆时针旋转 MBA53AA191 每下降 5bar 停顿 20S，直至压力表读数为 210bar。,event,[],[],318,Node
+顺时,event,[],[],319,Node
+制造商已经冲洗了RDS，不需要再对RDS进行冲洗处理。,event,[],[],320,Node
+制造商,entity,[],[],321,Node
+需要冲洗RDS上的供给管道HD / 637B和HE/638B。,event,[],[],322,Node
+HD / 637B,entity,[],[],323,Node
+HE/638B,entity,[],[],324,Node
+需要冲洗RDS上的返回管道HF / 639B。,event,[],[],325,Node
+HF / 639B,entity,[],[],326,Node
+需要冲洗到轮机的操作管道HS1 / 643A、HS2 / 642A、NS1 / 644A和NS2 / 645A。,event,[],[],327,Node
+HS1 / 643A,entity,[],[],328,Node
+HS2 / 642A,entity,[],[],329,Node
+NS1 / 644A,entity,[],[],330,Node
+NS2 / 645A,entity,[],[],331,Node
+管道的冲洗操作应以达到所需的纯度为标准。,event,[],[],332,Node
+管道,entity,[],[],333,Node
+纯度,entity,[],[],334,Node
+管道的冲洗及清洁度非SGC负责。,event,[],[],335,Node
+冲洗,entity,[],[],336,Node
+清洁度,entity,[],[],337,Node
+如果因为污染而导致故障、停运和设备损坏，则不在SGC保修范围内。,event,[],[],338,Node
+污染,entity,[],[],339,Node
+停运,entity,[],[],340,Node
+保修范围,entity,[],[],341,Node
+只能使用纯度不低于99.995%的氮气填充蓄能器。,event,[],[],342,Node
+氮气,entity,[],[],343,Node
+一定不要使用氧气或压缩空气填充蓄能器。,event,[],[],344,Node
+氧气,entity,[],[],345,Node
+压缩空气,entity,[],[],346,Node
+提供填充的氮气罐以及皮囊式蓄能器的填充器。,event,[],[],347,Node
+填充器,entity,[],[],348,Node
+必须使用降压器，如果氮气罐中的氮气压力高于皮囊式蓄能器中允许的压力。,event,[],[],349,Node
+降压器,entity,[],[],350,Node
+必须遵照相关说明，尤其要遵守氮气填充器制造商给出的安全须知。,event,[],[],351,Node
+安全须知,entity,[],[],352,Node
+说明,entity,[],[],353,Node
+本安装调试说明书并未详细介绍氮气填充器的情况。,event,[],[],354,Node
+安装调试说明书,entity,[],[],355,Node
+关于与填充器相关的详细操作信息，请参见填充器操作须知。,event,[],[],356,Node
+操作须知,entity,[],[],357,Node
+在填充皮囊式蓄能器时，应参考相关表格。,event,[],[],358,Node
+表格,entity,[],[],359,Node
+步骤1：切换蓄能器三通阀MBA51AA255和MBA51AA256以释放蓄能器流体侧的压力并将其与系统隔离。,event,[],[],360,Node
+MBA51AA255,entity,[],[],361,Node
+MBA51AA256,entity,[],[],362,Node
+蓄能器三通阀,entity,[],[],363,Node
+步骤2：将填充器连接到蓄能器填充阀。,event,[],[],364,Node
+蓄能器填充阀,entity,[],[],365,Node
+步骤3：填充皮囊式蓄能器。,event,[],[],366,Node
+填充,entity,[],[],367,Node
+步骤4：确定在操作温度以外的其它温度下的填充压力。,event,[],[],368,Node
+填充压力,entity,[],[],369,Node
+操作温度,entity,[],[],370,Node
+温度,entity,[],[],371,Node
+步骤5：在取下填充器之前，释放氮气管道的压力或关闭填充器处的氮气管道。,event,[],[],372,Node
+氮气管道,entity,[],[],373,Node
+步骤6：取下填充器。,event,[],[],374,Node
+步骤7：调整蓄能器三通阀MBA51AA255至正确位置。,event,[],[],375,Node
+在进行后面的调试操作之前，必须确保电机的旋转方向符合箭头所指方向。,event,[],[],376,Node
+电机,entity,[],[],377,Node
+旋转方向,entity,[],[],378,Node
+箭头,entity,[],[],379,Node
+泵,entity,[],[],380,Node
+风机风轮,entity,[],[],381,Node
+泵入口管的截止固件MBA51AA251必须处于打开状态。,event,[],[],382,Node
+MBA51AA251,entity,[],[],383,Node
+泵入口管,entity,[],[],384,Node
+截止固件,entity,[],[],385,Node
+泵入口管的截止固件MBA51AA252必须处于打开状态。,event,[],[],386,Node
+MBA51AA252,entity,[],[],387,Node
+在短时间内依次重新开关两个电机以检查旋转方向是否符合箭头方向。,event,[],[],388,Node
+如果电机连接有误，可能因为电击而发生事故。,event,[],[],389,Node
+电击,entity,[],[],390,Node
+事故,entity,[],[],391,Node
+必须由专业电气人员来完成连接。,event,[],[],392,Node
+专业电气人员,entity,[],[],393,Node
+连接,entity,[],[],394,Node
+如果旋转方向有误，应重新连接相应的电机。,event,[],[],395,Node
+在球阀闭合的情况下操作泵，即使时间很短，也会损坏泵。,event,[],[],396,Node
+球阀,entity,[],[],397,Node
+只有在相关球阀MBA51AA251或MBA51AA252打开的情况下，才能启动泵。,event,[],[],398,Node
+在对系统进行排气操作之前，应检查泵入口管的截止阀门MBA51AA251和MBA51AA252是否打开。,event,[],[],399,Node
+截止阀门,entity,[],[],400,Node
+在排气过程中不需要使用蓄能器，因此蓄能器三通阀MBA51AA255和MBA51AA256无需操作。,event,[],[],401,Node
+使用测量设备上的截止固件MBA53AA301到MBA53AA306对测量仪器管道进行排气操作。,event,[],[],402,Node
+MBA53AA301,entity,[],[],403,Node
+MBA53AA306,entity,[],[],404,Node
+测量设备,entity,[],[],405,Node
+测量仪器管道,entity,[],[],406,Node
+气泡,entity,[],[],407,Node
+溢出,entity,[],[],408,Node

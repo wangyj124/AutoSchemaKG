@@ -1,0 +1,178 @@
+Name,Type
+null,Entity
+20 区域,Entity
+_COMP,Entity
+SGC.JIANGYIN_2.20MAD12CY011XQ01,Entity
+001,Entity
+MKY 主系统,Entity
+测点SGC.HEFEI_1.01LAC20BG112,Entity
+68. GANLU_1 电厂,Entity
+SGC.CHUZHOU_1.10MBH22CP102XQ01,Entity
+测点SGC.GANLU_1.10MBH22AA102XC91,Entity
+AH001,Entity
+061,Entity
+设备 AP022,Entity
+SGC.HEFEI_2.02PAC01UC020XQ02,Entity
+113,Entity
+10 区域,Entity
+设备 CF101,Entity
+设备 BG112,Entity
+EZ,Entity
+AA102,Entity
+LUBE OIL HEATER TRIP,Entity
+HEFEI_2 电厂,Entity
+GEN. GCB FAILURE PROTECTION CH.B,Entity
+中压给水泵A驱动端径向轴承座Y向振动,Entity
+20MBA26CT108AXQ01,Entity
+20MAD12CY011XQ01,Entity
+测点SGC.SIHUI_2.20MBA26CT108AXQ01,Entity
+SIHUI_2 电厂,Entity
+XQ11XQ12,Entity
+EZ621,Entity
+UC,Entity
+CP,Entity
+mm,Entity
+01 区域,Entity
+AP,Entity
+20 号机组,Entity
+LAC 主系统,Entity
+中压汽包连排电动调节阀,Entity
+10MBH22CP102XQ01,Entity
+DT,Entity
+设备 DU061,Entity
+621,Entity
+EC,Entity
+YB02,Entity
+50 区域,Entity
+20MKY01EZ245XB01,Entity
+014,Entity
+245,Entity
+MBA 主系统,Entity
+Output Value,Entity
+TURBINE EXHAUST GAS TEMP A 8,Entity
+MAY 主系统,Entity
+MBV 主系统,Entity
+测点SGC.CHUZHOU_1.10MBH22CP102XQ01,Entity
+测点SGC.HEFEI_1.01LAC20BG113,Entity
+FENGQUAN_1 电厂,Entity
+HAD 主系统,Entity
+DANYANG_2.21MBV30CP901XG02,Entity
+CT108,Entity
+CJA 主系统,Entity
+102,Entity
+ZV60,Entity
+SGC.ZHOUKOU_2.20LAE90CF101_COMP,Entity
+02PAC01UC020XQ02,Entity
+10MAV21AP022YB02,Entity
+XC91,Entity
+108,Entity
+02 号机组,Entity
+01 号机组,Entity
+COOL. AIR FLAP 2 STAGE 2 CONTROL,Entity
+SGC.FENGQUAN_2.20MKY01EZ245XB01,Entity
+设备 BG113,Entity
+10CJA00DT100STORE,Entity
+CT,Entity
+SGC.YIXING_1.10MAV21AP022YB02,Entity
+10MBY10DU061XQ01,Entity
+01LAC20BG113,Entity
+00 区域,Entity
+设备 AH001,Entity
+设备 CP102,Entity
+A232203OUT,Entity
+_XK94,Entity
+022,Entity
+XQ02,Entity
+101,Entity
+测点SGC.FENGQUAN_2.20MKY01EZ245XB01,Entity
+设备 UC020,Entity
+测点SGC.FENGQUAN_1.10MBV10AH001ZV60,Entity
+EC001,Entity
+10 号机组,Entity
+设备 AA101,Entity
+MAV 主系统,Entity
+MBH 主系统,Entity
+FENGQUAN_2 电厂,Entity
+10MAD13CT014A232203OUT,Entity
+设备 CT108,Entity
+100,Entity
+设备 CY011,Entity
+UC020,Entity
+循环水泵2变频器柜电机电压,Entity
+AXQ01,Entity
+测点SGC.CHANGXING_1.10HAD55AA101XQ11XQ12,Entity
+DANYANG_2 电厂,Entity
+DU061,Entity
+55 区域,Entity
+XQ01,Entity
+设备 EZ245,Entity
+测点SGC.JIANGYIN_2.20MAD12CY011XQ01,Entity
+HEFEI_1 电厂,Entity
+LAE 主系统,Entity
+设备 CT014,Entity
+AH,Entity
+13 区域,Entity
+测点SGC.CHANGXING_1.10CJA00DT100STORE,Entity
+ST AX BRG S POSN,Entity
+20LAE90CF101_COMP,Entity
+STORE,Entity
+21 区域,Entity
+JIANGYIN_2 电厂,Entity
+MAD 主系统,Entity
+YIXING_1 电厂,Entity
+循环水泵2变频器柜电机电流,Entity
+XB01,Entity
+SGC.CHUZHOU_1.10MBY10DU061XQ01,Entity
+测点SGC.YIXING_1.10MAA50EZ621_XK94,Entity
+020,Entity
+69. FENGQUAN_1 电厂,Entity
+22 区域,Entity
+10MBV10AH001ZV60,Entity
+12 区域,Entity
+011,Entity
+测点SGC.CHANGXING_1.10MAD13CT014A232203OUT,Entity
+SGC.DANYANG_2.20MAY10EC001_ESVCLSD,Entity
+02PAC01UC020XQ01,Entity
+112,Entity
+MBY 主系统,Entity
+ZHOUKOU_2 电厂,Entity
+26 区域,Entity
+CHANGXING_1 电厂,Entity
+设备 DT100,Entity
+SGC.HEFEI_2.02PAC01UC020XQ01,Entity
+°,Entity
+10MBH22AA102XC91,Entity
+10HAD55AA101XQ11XQ12,Entity
+CHUZHOU_1 电厂,Entity
+90 区域,Entity
+MAA 主系统,Entity
+CF,Entity
+GANLU_1 电厂,Entity
+设备 AA102,Entity
+AA,Entity
+%,Entity
+测点SGC.YIXING_1.10MAV21AP022YB02,Entity
+CY,Entity
+67. SIHUI_2 电厂,Entity
+BG,Entity
+01LAC20BG112,Entity
+PAC 主系统,Entity
+DU,Entity
+UNIT TEMP SETP GT,Entity
+位于,Relation
+配置,Relation
+设备类型是,Relation
+功能描述为,Relation
+用于监测的设备类型为,Relation
+划分,Relation
+包含,Relation
+划分有,Relation
+的核心KKS码为,Relation
+核心 KKS 码为,Relation
+测量值单位为,Relation
+用于监测的设备序列号为,Relation
+用于监测,Relation
+用于监测设备,Relation
+设备序列号是,Relation
+部署,Relation
+无效代码标识为,Relation
